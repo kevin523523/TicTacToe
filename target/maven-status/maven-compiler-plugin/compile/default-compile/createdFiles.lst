@@ -1,3 +1,10 @@
+modelo\TipoImagen.class
 org\openjfx\tictactoe\VistaInicioController.class
+org\openjfx\tictactoe\VistaJugarController$Tablero.class
+org\openjfx\tictactoe\VistaJugarController$Cuadro.class
+org\openjfx\tictactoe\VistaJugarController.class
 org\openjfx\tictactoe\SecondaryController.class
+modelo\Cuadro.class
+modelo\Ruta.class
+modelo\Jugador.class
 org\openjfx\tictactoe\App.class
