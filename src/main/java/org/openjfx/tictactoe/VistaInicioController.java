@@ -49,7 +49,7 @@ public class VistaInicioController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        panelFondo.setStyle("-fx-border-color: #8B4513; -fx-border-width: 10px;-fx-background-color: #00b3ff");
+        panelFondo.setStyle("-fx-border-color: #D2B48C; -fx-border-width: 10px;-fx-background-color: #87CEEB");
 
         try {
             InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();

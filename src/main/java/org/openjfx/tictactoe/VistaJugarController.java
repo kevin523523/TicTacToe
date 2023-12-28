@@ -178,7 +178,7 @@ public class VistaJugarController implements Initializable {
         }
 
         public void crearTablero() {
-            paneTablero.setStyle("-fx-border-color: #8B4513; -fx-border-width: 10px;-fx-background-color: #cef139");
+            paneTablero.setStyle("-fx-border-color: #004080; -fx-border-width: 10px;-fx-background-color: #FFFF99");
             //paneCuadroFrontal.setStyle("-fx-background-color: #86ffff");
             paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
             paneCuadroFrontal.setPrefHeight(350);
@@ -199,7 +199,7 @@ public class VistaJugarController implements Initializable {
                     AnchorPane paneCuadro = new AnchorPane();
                     Cuadro cuadro = new Cuadro();
                     cuadros.add(cuadro);
-                    paneCuadro.setStyle("-fx-border-color: #fe9430; -fx-border-width: 10px;-fx-background-color: #fe9430");
+                    paneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
                     paneCuadro.setLayoutX(x);
                     paneCuadro.setLayoutY(y);
                     cuadro.setI(i);
@@ -420,7 +420,7 @@ public class VistaJugarController implements Initializable {
         tablero = new Tablero();
         tablero.setJugador1(jugador1);
         tablero.setJugador2(jugador2);
-        panelFondo.setStyle("-fx-border-color: #8B4513; -fx-border-width: 10px;-fx-background-color: #00b3ff");
+        panelFondo.setStyle("-fx-border-color: #D2B48C; -fx-border-width: 10px;-fx-background-color: #87CEEB");
         tablero.crearTablero();
         tablero.crearCuadrosInternos();
         try {
