@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import java.io.InputStream;
 import java.net.URL;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +44,10 @@ public class VistaJugarController implements Initializable {
     @FXML
     private Label lblJugador2;
     @FXML
+    private Label lblPuntaje1;
+    @FXML
+    private Label lblPuntaje2;
+    @FXML
     private AnchorPane paneTablero;
     @FXML
     private AnchorPane paneCuadro;
@@ -50,18 +57,23 @@ public class VistaJugarController implements Initializable {
     private static VBox vBoxTablero;
     @FXML
     private ImageView img;
+    @FXML
+    private ImageView imgFrontal;
+    @FXML
+    private AnchorPane paneCuadroFrontal;
 
-    private static Jugador jugador1;
-    private static Jugador jugador2;
-    private static Tablero tablero;
+    public static Jugador jugador1;
+    public static Jugador jugador2;
+    public static Tablero tablero;
     private TipoImagen jugadorActual;
     private TipoImagen turnoPartida;
     private TipoImagen tipoImagen;
 
+    private ArrayList<Cuadro> cuadros = new ArrayList();
+
     public static void EnviarJugador(Jugador jugador1, Jugador jugador2) {
         VistaJugarController.jugador1 = jugador1;
         VistaJugarController.jugador2 = jugador2;
-
     }
 
     public class Tablero {
@@ -71,6 +83,12 @@ public class VistaJugarController implements Initializable {
 
         public void crearTablero() {
             paneTablero.setStyle("-fx-border-color: #8B4513; -fx-border-width: 10px;-fx-background-color: #cef139");
+            //paneCuadroFrontal.setStyle("-fx-background-color: #86ffff");
+            paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
+            paneCuadroFrontal.setPrefHeight(350);
+            paneCuadroFrontal.setLayoutX(15);
+            paneCuadroFrontal.setLayoutY(15);
+
         }
 
         public void crearCuadrosInternos() {
@@ -84,9 +102,12 @@ public class VistaJugarController implements Initializable {
                 for (int j = 0; j < 3; j++) {
                     AnchorPane paneCuadro = new AnchorPane();
                     Cuadro cuadro = new Cuadro();
+                    cuadros.add(cuadro);
                     paneCuadro.setStyle("-fx-border-color: #fe9430; -fx-border-width: 10px;-fx-background-color: #fe9430");
                     paneCuadro.setLayoutX(x);
                     paneCuadro.setLayoutY(y);
+                    cuadro.setI(i);
+                    cuadro.setJ(j);
                     paneCuadro.setCursor(Cursor.HAND);
                     paneCuadro.setPrefWidth(anchoCI); // Establecer el nuevo ancho
                     paneCuadro.setPrefHeight(alturaCI); // Establecer la nueva altura
@@ -102,21 +123,31 @@ public class VistaJugarController implements Initializable {
 
         public void crearEventosCuadro(AnchorPane paneCuadro, Cuadro cuadro) {
             paneCuadro.setOnMousePressed((MouseEvent event) -> {
-                TipoImagen tipoImagenResultado = null;
                 if (cuadro.isDibujado()) {
                     return;
                 }
+                TipoImagen tipoImagenResultado = null;
+
                 if (jugadorActual == TipoImagen.EQUIS) {
+                    jugador1.getTablero()[cuadro.getI()][cuadro.getJ()] = 1;
+
+                    tipoImagenResultado = jugador1.tresEnRaya(jugador2);
                     setTipoImagen(TipoImagen.EQUIS);
                     cuadro.paintComponent(paneCuadro);
                     jugadorActual = TipoImagen.CIRCULO;
                     cambiarEstilos(TipoImagen.CIRCULO);
+                    resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
                 } else if (jugadorActual == TipoImagen.CIRCULO) {
+                    jugador2.getTablero()[cuadro.getI()][cuadro.getJ()] = 1;
+                    tipoImagenResultado = jugador2.tresEnRaya(jugador1);
                     setTipoImagen(TipoImagen.CIRCULO);
                     cuadro.paintComponent(paneCuadro);
                     jugadorActual = TipoImagen.EQUIS;
                     cambiarEstilos(TipoImagen.EQUIS);
+
+                    resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
                 }
+
                 cuadro.setDibujado(true);
 
             });
@@ -182,6 +213,24 @@ public class VistaJugarController implements Initializable {
         private int altura;
         private Color color;
         private boolean dibujado;
+        private int i;
+        private int j;
+
+        public int getI() {
+            return i;
+        }
+
+        public void setI(int i) {
+            this.i = i;
+        }
+
+        public int getJ() {
+            return j;
+        }
+
+        public void setJ(int j) {
+            this.j = j;
+        }
 
         public boolean isDibujado() {
             return dibujado;
@@ -306,6 +355,95 @@ public class VistaJugarController implements Initializable {
         //hBoxJugador2.getChildren().add(oImg);
         lblJugador1.setText(jugador1.getNombre());
         lblJugador2.setText(jugador2.getNombre());
+
+    }
+
+    public void desactivarCuadros(boolean valor) {
+        for (Cuadro cuadro : cuadros) {
+            cuadro.setDibujado(valor);
+        }
+    }
+
+    public void reiniciarTablero(TipoImagen ganador) {
+        desactivarCuadros(false);
+        borrarImagenes();
+        paneCuadroFrontal.getChildren().clear();
+        if (ganador == TipoImagen.EQUIS) {
+            int puntajeNuevo = Integer.parseInt(lblPuntaje1.getText()) + 1;
+            lblPuntaje1.setText(String.valueOf(puntajeNuevo));
+        } else if (ganador == TipoImagen.CIRCULO) {
+            int puntajeNuevo = Integer.parseInt(lblPuntaje2.getText()) + 1;
+            lblPuntaje2.setText(String.valueOf(puntajeNuevo));
+        }
+    }
+
+    public void borrarImagenes() {
+        paneTablero.getChildren().clear();
+    }
+
+    public void resultado(TipoImagen tipoImagenResultado, TipoImagen jugadorGanador, AnchorPane paneCuadroFrontal) {
+        try {
+            if (tipoImagenResultado == TipoImagen.EMPATE) {
+                VistaVictoriaController v1 = new VistaVictoriaController();
+                v1.pintarGanador(tipoImagenResultado, tablero, jugador1, jugador2);
+            } else if (tipoImagenResultado != null) {
+                System.out.println("Hay un ganador");
+                System.out.println(tipoImagenResultado);
+                //VistaVictoriaController.pintarGanador(tipoImagenResultado, tablero);
+                if (jugadorGanador == TipoImagen.CIRCULO) {
+                    InputStream input1 = App.class.getResource("Circulo" + tipoImagenResultado.toString() + ".png").openStream();
+                    Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
+                    imgFrontal = new ImageView(imgF);
+                } else if (jugadorGanador == TipoImagen.EQUIS) {
+                    InputStream input1 = App.class.getResource("Equis" + tipoImagenResultado.toString() + ".png").openStream();
+                    Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
+                    imgFrontal = new ImageView(imgF);
+                }
+
+                int indice = paneTablero.getChildren().indexOf(paneCuadroFrontal);
+                paneTablero.getChildren().remove(indice);
+                paneCuadroFrontal.getChildren().add(imgFrontal);
+                paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50); // Establecer el nuevo ancho
+                paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
+                //paneCuadroFrontal.setLayoutX(0);
+                //paneCuadroFrontal.setLayoutY(0);
+                paneTablero.getChildren().add(paneCuadroFrontal);
+                desactivarCuadros(true);
+                VistaVictoriaController v1 = new VistaVictoriaController();
+                v1.pintarGanador(jugadorGanador, tablero, jugador1, jugador2);
+
+            }
+        } catch (NullPointerException | IOException ex) {
+            imgFrontal = new ImageView();
+        }
+        /*
+        if (tipoImagenResultado == TipoImagen.EMPATE) {
+            Tablero tablero = VistaJugarController.tablero;
+            Timer timer = new Timer();
+            TimerTask tarea = new TimerTask() {
+                @Override
+                public void run() {
+                    VistaVictoriaController.pintarGanador(TipoImagen.EMPATE, tablero);
+                    VistaVictoriaController.pintarPartidaTerminada();
+                }
+            };
+            timer.schedule(tarea, 800);
+        }/*else if (tipoImagenResultado != null) {
+            Ruta.cambiarRutas(jugadorGanador);
+            cuadroFrontal.setTipoImagen(tipoImagenResultado);
+            
+
+            Tablero tablero = VistaJugarController.tablero;
+            Timer timer = new Timer();
+            TimerTask tarea = new TimerTask() {
+                @Override
+                public void run() {
+                    VistaVictoriaController.pintarGanador(TipoImagen.EMPATE, tablero);
+                    VistaVictoriaController.pintarPartidaTerminada();
+                }
+            };
+            timer.schedule(tarea, 800);
+        }*/
 
     }
 
