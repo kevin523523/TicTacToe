@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,7 +43,9 @@ public class VistaVictoriaController implements Initializable {
     private Label lblGanador;
     @FXML
     private AnchorPane pane;
-    private Tablero tablero;
+    @FXML
+    private Button btnJugarDeNuevo;
+    private static Tablero tablero;
     private static TipoImagen jugadorGanador;
     private Jugador jugadorP1 = new Jugador();
     private Jugador jugador2;
@@ -53,6 +56,7 @@ public class VistaVictoriaController implements Initializable {
     public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, Jugador jugador1, Jugador jugador2) {
         //jugadorP1.setNombre(jugador1.getNombre());
         this.jugadorGanador = jugadorGanador;
+        this.tablero = tablero;
         try {
 
             FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoria.fxml"));
@@ -73,8 +77,17 @@ public class VistaVictoriaController implements Initializable {
         }
     }
 
+    @FXML
     public void jugarDeNuevo(MouseEvent event) {
-        //reiniciarTablero(jugadorGanador);
+        // Obtén la referencia al Stage actual
+        Stage stage = (Stage) btnJugarDeNuevo.getScene().getWindow();
+
+        // Cierra la ventana actual
+        stage.close();
+        tablero.reiniciarTablero(jugadorGanador);
+        tablero.crearTablero();
+        tablero.crearCuadrosInternos();
+
     }
 
     @Override
@@ -84,7 +97,7 @@ public class VistaVictoriaController implements Initializable {
             InputStream input2;
             if (VistaVictoriaController.jugadorGanador == TipoImagen.EQUIS) {
                 input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
@@ -94,7 +107,7 @@ public class VistaVictoriaController implements Initializable {
                 hBoxVictoria.getChildren().add(imgIcono);
             } else if (VistaVictoriaController.jugadorGanador == TipoImagen.CIRCULO) {
                 input1 = App.class.getResource(Ruta.CIRCULO).openStream();
-                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
+                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
@@ -103,8 +116,8 @@ public class VistaVictoriaController implements Initializable {
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
             } else {
-                input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.CIRCULO).openStream();
+                input1 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);

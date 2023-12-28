@@ -25,7 +25,7 @@
                   </Label>
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onMouseClicked="#jugarDeNuevo" text="Jugar De Nuevo">
+            <Button fx:id="btnJugarDeNuevo" mnemonicParsing="false" onMouseClicked="#jugarDeNuevo" text="Jugar De Nuevo">
                <font>
                   <Font size="21.0" />
                </font>

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -79,6 +80,101 @@ public class VistaJugarController implements Initializable {
     public class Tablero {
 
         public Tablero() {
+        }
+
+        public void borrarImagenes() {
+            paneTablero.getChildren().clear();
+            paneCuadroFrontal.getChildren().clear();
+        }
+
+        public void desactivarCuadros(boolean valor) {
+            for (Cuadro cuadro : cuadros) {
+                cuadro.setDibujado(valor);
+            }
+        }
+
+        public void reiniciarTablero(TipoImagen ganador) {
+            desactivarCuadros(false);
+            borrarImagenes();
+            System.out.println(ganador);
+            if (ganador == TipoImagen.EQUIS) {
+                int puntajeNuevo = Integer.parseInt(lblPuntaje1.getText()) + 1;
+                lblPuntaje1.setText(String.valueOf(puntajeNuevo));
+            } else if (ganador == TipoImagen.CIRCULO) {
+                int puntajeNuevo = Integer.parseInt(lblPuntaje2.getText()) + 1;
+                lblPuntaje2.setText(String.valueOf(puntajeNuevo));
+            }
+            if (turnoPartida == TipoImagen.EQUIS) {
+                jugadorActual = TipoImagen.CIRCULO;
+                turnoPartida = TipoImagen.CIRCULO;
+            } else if (turnoPartida == TipoImagen.CIRCULO) {
+                jugadorActual = TipoImagen.EQUIS;
+                turnoPartida = TipoImagen.EQUIS;
+            }
+            cambiarEstilos(jugadorActual.EQUIS);
+            jugador1.limpiarTablero();
+            jugador2.limpiarTablero();
+        }
+
+        public void resultado(TipoImagen tipoImagenResultado, TipoImagen jugadorGanador, AnchorPane paneCuadroFrontal) {
+            try {
+                if (tipoImagenResultado == TipoImagen.EMPATE) {
+                    Timer timer = new Timer();
+                    TimerTask tarea = new TimerTask() {
+                        @Override
+                        public void run() {
+                            Platform.runLater(() -> {
+                                VistaVictoriaController v1 = new VistaVictoriaController();
+                                v1.pintarGanador(tipoImagenResultado, tablero, jugador1, jugador2);
+                            });
+                        }
+                    };
+                    timer.schedule(tarea, 800);
+
+                } else if (tipoImagenResultado != null) {
+                    if (jugadorGanador == TipoImagen.CIRCULO) {
+                        InputStream input1 = App.class.getResource("Circulo" + tipoImagenResultado.toString() + ".png").openStream();
+                        Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
+                        imgFrontal = new ImageView(imgF);
+                    } else if (jugadorGanador == TipoImagen.EQUIS) {
+                        InputStream input1 = App.class.getResource("Equis" + tipoImagenResultado.toString() + ".png").openStream();
+                        Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
+                        imgFrontal = new ImageView(imgF);
+                    }
+                    int indice = paneTablero.getChildren().indexOf(paneCuadroFrontal);
+
+                    if (indice != -1) {
+                        paneTablero.getChildren().remove(indice);
+                    }
+
+                    paneCuadroFrontal.getChildren().add(imgFrontal);
+
+                    paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50); // Establecer el nuevo ancho
+                    paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
+                    //paneCuadroFrontal.setLayoutX(0);
+                    //paneCuadroFrontal.setLayoutY(0);
+                    paneTablero.getChildren().add(paneCuadroFrontal);
+
+                    desactivarCuadros(true);
+
+                    Timer timer = new Timer();
+                    TimerTask tarea = new TimerTask() {
+                        @Override
+                        public void run() {
+                            Platform.runLater(() -> {
+                            VistaVictoriaController v1 = new VistaVictoriaController();
+                            v1.pintarGanador(jugadorGanador, tablero, jugador1, jugador2);
+                            });
+
+                        }
+                    };
+                    timer.schedule(tarea, 800);
+
+                }
+            } catch (NullPointerException | IOException ex) {
+                imgFrontal = new ImageView();
+            }
+
         }
 
         public void crearTablero() {
@@ -158,8 +254,8 @@ public class VistaJugarController implements Initializable {
             try {
                 InputStream jugadorAuxiliar = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
                 Image imgAuxiliar = new Image(jugadorAuxiliar, 50, 50, true, true);
-                InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
-                InputStream jugador2 = App.class.getResource("jugadorDos.png").openStream();
+                InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();
+                InputStream jugador2 = App.class.getResource("jugadorUno.png").openStream();
                 //InputStream x = App.class.getResource("Equis.png").openStream();
                 //InputStream o = App.class.getResource("Circulo.png").openStream();
                 Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
@@ -355,95 +451,6 @@ public class VistaJugarController implements Initializable {
         //hBoxJugador2.getChildren().add(oImg);
         lblJugador1.setText(jugador1.getNombre());
         lblJugador2.setText(jugador2.getNombre());
-
-    }
-
-    public void desactivarCuadros(boolean valor) {
-        for (Cuadro cuadro : cuadros) {
-            cuadro.setDibujado(valor);
-        }
-    }
-
-    public void reiniciarTablero(TipoImagen ganador) {
-        desactivarCuadros(false);
-        borrarImagenes();
-        paneCuadroFrontal.getChildren().clear();
-        if (ganador == TipoImagen.EQUIS) {
-            int puntajeNuevo = Integer.parseInt(lblPuntaje1.getText()) + 1;
-            lblPuntaje1.setText(String.valueOf(puntajeNuevo));
-        } else if (ganador == TipoImagen.CIRCULO) {
-            int puntajeNuevo = Integer.parseInt(lblPuntaje2.getText()) + 1;
-            lblPuntaje2.setText(String.valueOf(puntajeNuevo));
-        }
-    }
-
-    public void borrarImagenes() {
-        paneTablero.getChildren().clear();
-    }
-
-    public void resultado(TipoImagen tipoImagenResultado, TipoImagen jugadorGanador, AnchorPane paneCuadroFrontal) {
-        try {
-            if (tipoImagenResultado == TipoImagen.EMPATE) {
-                VistaVictoriaController v1 = new VistaVictoriaController();
-                v1.pintarGanador(tipoImagenResultado, tablero, jugador1, jugador2);
-            } else if (tipoImagenResultado != null) {
-                System.out.println("Hay un ganador");
-                System.out.println(tipoImagenResultado);
-                //VistaVictoriaController.pintarGanador(tipoImagenResultado, tablero);
-                if (jugadorGanador == TipoImagen.CIRCULO) {
-                    InputStream input1 = App.class.getResource("Circulo" + tipoImagenResultado.toString() + ".png").openStream();
-                    Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
-                    imgFrontal = new ImageView(imgF);
-                } else if (jugadorGanador == TipoImagen.EQUIS) {
-                    InputStream input1 = App.class.getResource("Equis" + tipoImagenResultado.toString() + ".png").openStream();
-                    Image imgF = new Image(input1, paneTablero.getWidth() - 50, paneTablero.getHeight() - 50, true, true);
-                    imgFrontal = new ImageView(imgF);
-                }
-
-                int indice = paneTablero.getChildren().indexOf(paneCuadroFrontal);
-                paneTablero.getChildren().remove(indice);
-                paneCuadroFrontal.getChildren().add(imgFrontal);
-                paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50); // Establecer el nuevo ancho
-                paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
-                //paneCuadroFrontal.setLayoutX(0);
-                //paneCuadroFrontal.setLayoutY(0);
-                paneTablero.getChildren().add(paneCuadroFrontal);
-                desactivarCuadros(true);
-                VistaVictoriaController v1 = new VistaVictoriaController();
-                v1.pintarGanador(jugadorGanador, tablero, jugador1, jugador2);
-
-            }
-        } catch (NullPointerException | IOException ex) {
-            imgFrontal = new ImageView();
-        }
-        /*
-        if (tipoImagenResultado == TipoImagen.EMPATE) {
-            Tablero tablero = VistaJugarController.tablero;
-            Timer timer = new Timer();
-            TimerTask tarea = new TimerTask() {
-                @Override
-                public void run() {
-                    VistaVictoriaController.pintarGanador(TipoImagen.EMPATE, tablero);
-                    VistaVictoriaController.pintarPartidaTerminada();
-                }
-            };
-            timer.schedule(tarea, 800);
-        }/*else if (tipoImagenResultado != null) {
-            Ruta.cambiarRutas(jugadorGanador);
-            cuadroFrontal.setTipoImagen(tipoImagenResultado);
-            
-
-            Tablero tablero = VistaJugarController.tablero;
-            Timer timer = new Timer();
-            TimerTask tarea = new TimerTask() {
-                @Override
-                public void run() {
-                    VistaVictoriaController.pintarGanador(TipoImagen.EMPATE, tablero);
-                    VistaVictoriaController.pintarPartidaTerminada();
-                }
-            };
-            timer.schedule(tarea, 800);
-        }*/
 
     }
 

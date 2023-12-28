@@ -52,8 +52,8 @@ public class VistaInicioController implements Initializable {
         panelFondo.setStyle("-fx-border-color: #8B4513; -fx-border-width: 10px;-fx-background-color: #00b3ff");
 
         try {
-            InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
-            InputStream jugador2 = App.class.getResource("jugadorDos.png").openStream();
+            InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();
+            InputStream jugador2 = App.class.getResource("jugadorUno.png").openStream();
             InputStream x = App.class.getResource("Equis.png").openStream();
             InputStream o = App.class.getResource("Circulo.png").openStream();
             Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
