@@ -15,11 +15,11 @@
       <Insets />
    </opaqueInsets>
    <children>
-      <VBox fx:id="vBoxJugadores" layoutX="-1.0" layoutY="83.0" prefHeight="322.0" prefWidth="508.0">
+      <VBox fx:id="vBoxJugadores" alignment="CENTER" layoutX="67.0" layoutY="85.0" prefHeight="293.0" prefWidth="426.0">
          <children>
-            <HBox fx:id="hBoxJugador1" alignment="CENTER" prefHeight="70.0" prefWidth="270.0">
+            <HBox fx:id="hBoxJugador1" alignment="CENTER" prefHeight="70.0" prefWidth="173.0">
                <children>
-                  <TextField fx:id="txtJugador1" alignment="CENTER" focusTraversable="false" onKeyTyped="#txtJugador1KeyTyped" onMouseEntered="#txtJugador1MouseEntered" onMouseExited="#txtJugador1MouseExited" prefHeight="33.0" prefWidth="126.0" promptText="Jugador 1">
+                  <TextField fx:id="txtJugador1" alignment="CENTER" focusTraversable="false" onKeyTyped="#txtJugador1KeyTyped" onMouseEntered="#txtJugador1MouseEntered" onMouseExited="#txtJugador1MouseExited" prefHeight="34.0" prefWidth="211.0" promptText="Jugador 1">
                      <font>
                         <Font name="Algerian" size="18.0" />
                      </font>
@@ -28,7 +28,7 @@
             </HBox>
             <HBox fx:id="hBoxJugador2" alignment="CENTER" prefHeight="54.0" prefWidth="174.0">
                <children>
-                  <TextField fx:id="txtJugador2" focusTraversable="false" onKeyTyped="#txtJugador2KeyTyped" onMouseEntered="#txtJugador2MouseEntered" onMouseExited="#txtJugador2MouseExited" prefHeight="26.0" prefWidth="118.0" promptText="Jugador 2">
+                  <TextField fx:id="txtJugador2" alignment="CENTER" focusTraversable="false" onKeyTyped="#txtJugador2KeyTyped" onMouseEntered="#txtJugador2MouseEntered" onMouseExited="#txtJugador2MouseExited" prefHeight="33.0" prefWidth="205.0" promptText="Jugador 2">
                      <font>
                         <Font name="Algerian" size="18.0" />
                      </font>
@@ -51,7 +51,7 @@
       </VBox>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="165.0" layoutY="34.0" text="TIC TAC TOE">
          <font>
-            <Font name="Showcard Gothic" size="36.0" />
+            <Font name="Algerian" size="38.0" />
          </font>
       </Label>
       

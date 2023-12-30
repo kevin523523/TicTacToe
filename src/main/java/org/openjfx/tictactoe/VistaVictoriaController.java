@@ -90,6 +90,17 @@ public class VistaVictoriaController implements Initializable {
 
     }
 
+    @FXML
+    public void regresar(MouseEvent event) throws IOException {
+        Stage stage = (Stage) btnJugarDeNuevo.getScene().getWindow();
+        stage.close();
+        tablero.reiniciarTablero(jugadorGanador);
+        tablero.crearTablero();
+        tablero.crearCuadrosInternos();
+        App.setRoot("VistaPrincipal");
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {

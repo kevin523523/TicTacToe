@@ -1,13 +1,8 @@
 org\openjfx\tictactoe\VistaVictoriaController.class
-modelo\TipoImagen.class
 org\openjfx\tictactoe\VistaInicioController.class
 org\openjfx\tictactoe\VistaJugarController$Tablero$2.class
-org\openjfx\tictactoe\PruebaController.class
 org\openjfx\tictactoe\VistaJugarController$Tablero.class
 org\openjfx\tictactoe\VistaJugarController$Cuadro.class
 org\openjfx\tictactoe\VistaJugarController.class
-org\openjfx\tictactoe\SecondaryController.class
 org\openjfx\tictactoe\VistaJugarController$Tablero$1.class
-modelo\Ruta.class
-modelo\Jugador.class
-org\openjfx\tictactoe\App.class
+org\openjfx\tictactoe\VistaPrincipalController.class

@@ -18,7 +18,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("VistaInicio"), 640, 480);
+        scene = new Scene(loadFXML("VistaPrincipal"), 640, 480);
         stage.setTitle("Tic Toe");
         stage.getIcons().add(new Image(App.class.getResourceAsStream("tictactoe.png")));
         stage.setScene(scene);
