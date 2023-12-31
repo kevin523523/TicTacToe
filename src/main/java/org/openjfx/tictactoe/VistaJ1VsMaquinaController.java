@@ -18,6 +18,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,6 +71,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
     private ImageView imgFrontal;
     @FXML
     private AnchorPane paneCuadroFrontal;
+    @FXML
+    private AnchorPane nuevoPaneCuadro;
 
     public static JugadorM jugador1;
     public static Maquina jugadorM;
@@ -161,7 +164,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                     paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
                     //paneCuadroFrontal.setLayoutX(0);
                     //paneCuadroFrontal.setLayoutY(0);
-                    paneTablero.getChildren().add(paneCuadroFrontal);
+                    //paneTablero.getChildren().add(paneCuadroFrontal);
 
                     desactivarCuadros(true);
 
@@ -227,7 +230,6 @@ public class VistaJ1VsMaquinaController implements Initializable {
             TipoImagen tipoImagenResultado = null;
             if (jugadorActual == TipoImagen.EQUIS) {
                 jugador1.getTablero()[cuadro.getI()][cuadro.getJ()] = "x";
-
                 tipoImagenResultado = jugador1.tresEnRaya(jugadorM);
                 setTipoImagen(TipoImagen.EQUIS);
                 cuadro.paintComponent(paneCuadro);
@@ -235,6 +237,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 cambiarEstilos(TipoImagen.CIRCULO);
                 resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
                 cuadro.setDibujado(true);
+                jugarTurnoMaquina(jugador1);
             }
         }
 
@@ -244,34 +247,53 @@ public class VistaJ1VsMaquinaController implements Initializable {
                     return;
                 }
                 jugarTurnoHumano(paneCuadro, cuadro);
-                jugarTurnoMaquina(paneCuadro);
+
             });
 
         }
 
-        public void jugarTurnoMaquina(AnchorPane paneCuadro) {
-            Cuadro cuadroDefinido = turnoMaquina(jugador1);
-            cuadroDefinido.paintComponent(paneCuadro);
+        public void jugarTurnoMaquina(JugadorM jugador) {
             jugadorActual = TipoImagen.EQUIS;
+            turnoMaquina(jugador);
             cambiarEstilos(TipoImagen.EQUIS);
             TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
             resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
-            cuadroDefinido.setDibujado(true);
         }
 
-        public Cuadro turnoMaquina(JugadorM jugador) {
+
+        public void turnoMaquina(JugadorM jugador) {
             Tree<String[][]> padre = generarEstadosActual(jugador.getTablero());
             ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
-            jugadorM.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
-            System.out.println(posicionCuadro.get(0));
-            System.out.println(posicionCuadro.get(1));
-            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-            setTipoImagen(TipoImagen.CIRCULO);
-            Cuadro cuadro = new Cuadro();
-            cuadro.setI(posicionCuadro.get(0));
-            cuadro.setJ(posicionCuadro.get(1));
-            cuadro.paintComponent(paneCuadro);
-            return cuadro;
+            try {
+                jugadorM.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
+                System.out.println(posicionCuadro.get(0));
+                System.out.println(posicionCuadro.get(1));
+
+                TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+                setTipoImagen(TipoImagen.CIRCULO);
+                Cuadro cuadro = new Cuadro();
+                cuadro.setI(posicionCuadro.get(0));
+                cuadro.setJ(posicionCuadro.get(1));
+                InputStream input = App.class.getResource(Ruta.CIRCULO).openStream();
+                Image imagen = new Image(input, 80, 80, true, true);
+
+                img = new ImageView(imagen);
+                nuevoPaneCuadro.getChildren().add(img);
+                int index = 3*posicionCuadro.get(0)+ posicionCuadro.get(1)+1;
+                Node pane = paneTablero.getChildren().get(index);
+                double x = pane.getLayoutX();
+                double y = pane.getLayoutY();
+                nuevoPaneCuadro.setLayoutX(x);
+                nuevoPaneCuadro.setLayoutY(y);
+                nuevoPaneCuadro.setPrefWidth(100);
+                nuevoPaneCuadro.setPrefHeight(100);
+                nuevoPaneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
+                paneTablero.getChildren().remove(index);
+                paneTablero.getChildren().add(index, nuevoPaneCuadro);
+                cuadro.setDibujado(true);
+            } catch (NullPointerException | IOException ex) {
+                img = new ImageView();
+            }
         }
 
         //OJO
@@ -553,6 +575,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        nuevoPaneCuadro = new AnchorPane();
+        paneCuadroFrontal = new AnchorPane(); 
         jugadorActual = TipoImagen.EQUIS;
         turnoPartida = TipoImagen.EQUIS;
         tablero = new Tablero();
@@ -563,10 +587,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
         tablero.crearCuadrosInternos();
 
         try {
-            InputStream jugador1 = App.class
-                    .getResource("jugadorUno.png").openStream();
-            InputStream jugador2 = App.class
-                    .getResource("maquina.png").openStream();
+            InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
+            InputStream jugador2 = App.class.getResource("maquina.png").openStream();
             //InputStream x = App.class.getResource("Equis.png").openStream();
             //InputStream o = App.class.getResource("Circulo.png").openStream();
             Image imgJugador1 = new Image(jugador1, 50, 50, true, true);

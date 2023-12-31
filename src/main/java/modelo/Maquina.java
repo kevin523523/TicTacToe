@@ -71,25 +71,25 @@ public class Maquina {
         if (tablero[0][0] == "o" && tablero[0][1] == "o" && tablero[0][2] == "o") {
             return TipoImagen.LINEA1;
         }
-        if (tablero[1][0] == "o" && tablero[1][1] == "0" && tablero[1][2] == "0") {
+        if (tablero[1][0] == "o" && tablero[1][1] == "o" && tablero[1][2] == "o") {
             return TipoImagen.LINEA2;
         }
-        if (tablero[2][0] == "o" && tablero[2][1] == "0" && tablero[2][2] == "0") {
+        if (tablero[2][0] == "o" && tablero[2][1] == "o" && tablero[2][2] == "o") {
             return TipoImagen.LINEA3;
         }
-        if (tablero[0][0] == "o" && tablero[1][0] == "0" && tablero[2][0] == "0") {
+        if (tablero[0][0] == "o" && tablero[1][0] == "o" && tablero[2][0] == "o") {
             return TipoImagen.LINEA4;
         }
-        if (tablero[0][1] == "o" && tablero[1][1] == "0" && tablero[2][1] == "0") {
+        if (tablero[0][1] == "o" && tablero[1][1] == "o" && tablero[2][1] == "o") {
             return TipoImagen.LINEA5;
         }
-        if (tablero[0][2] == "o" && tablero[1][2] == "0" && tablero[2][2] == "0") {
+        if (tablero[0][2] == "o" && tablero[1][2] == "o" && tablero[2][2] == "o") {
             return TipoImagen.LINEA6;
         }
-        if (tablero[2][0] == "o" && tablero[1][1] == "0" && tablero[0][2] == "0") {
+        if (tablero[2][0] == "o" && tablero[1][1] == "o" && tablero[0][2] == "o") {
             return TipoImagen.LINEA7;
         }
-        if (tablero[0][0] == "o" && tablero[1][1] == "0" && tablero[2][2] == "0") {
+        if (tablero[0][0] == "o" && tablero[1][1] == "o" && tablero[2][2] == "o") {
             return TipoImagen.LINEA8;
         }
 
