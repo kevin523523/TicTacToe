@@ -103,7 +103,7 @@ public class VistaVictoriaMController implements Initializable {
             InputStream input2;
             if (jugadorGanador == TipoImagen.EQUIS) {
                 input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.JUGADORMAQUINA).openStream();
+                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
@@ -113,7 +113,7 @@ public class VistaVictoriaMController implements Initializable {
                 hBoxVictoria.getChildren().add(imgIcono);
             } else if (jugadorGanador == TipoImagen.CIRCULO) {
                 input1 = App.class.getResource(Ruta.CIRCULO).openStream();
-                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORMAQUINA).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);

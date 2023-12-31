@@ -454,7 +454,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 InputStream jugadorAuxiliar = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
                 InputStream jugadorAuxiliarM = App.class.getResource(Ruta.JUGADORAUXILLARM).openStream();
                 Image imgAuxiliar = new Image(jugadorAuxiliar, 50, 50, true, true);
-                Image imgAuxiliarM = new Image(jugadorAuxiliar, 50, 50, true, true);
+                Image imgAuxiliarM = new Image(jugadorAuxiliarM, 80, 80, true, true);
                 InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();
                 InputStream jugador2 = App.class.getResource("maquina.png").openStream();
                 Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
@@ -469,7 +469,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                     vBoxJugadorM.getChildren().add(0, jugadorMImag);
 
                 } else {
-                    jugadorMImag = new ImageView(imgAuxiliar);
+                    jugadorMImag = new ImageView(imgAuxiliarM);
                     vBoxJugadorM.getChildren().remove(0);
                     vBoxJugadorM.getChildren().add(0, jugadorMImag);
                     jugador1Img = new ImageView(imgJugador1);

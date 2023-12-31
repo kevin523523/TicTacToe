@@ -4,9 +4,6 @@
  */
 package modelo;
 
-import org.openjfx.tictactoe.VistaJugarController;
-import org.openjfx.tictactoe.VistaJugarController.Tablero;
-
 /**
  *
  * @author kevin
