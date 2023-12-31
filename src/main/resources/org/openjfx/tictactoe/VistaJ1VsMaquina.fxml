@@ -59,14 +59,7 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox fx:id="hBoxTablero" alignment="CENTER" prefHeight="278.0" prefWidth="600.0">
-               <children>
-                  <AnchorPane fx:id="paneTablero" prefHeight="278.0" prefWidth="355.0">
-                     <children>
-                        <AnchorPane fx:id="paneCuadroFrontal" layoutX="37.0" layoutY="44.0" prefHeight="204.0" prefWidth="284.0" />
-                     </children></AnchorPane>
-               </children>
-            </HBox>
+            <HBox fx:id="hBoxTablero" alignment="CENTER" prefHeight="278.0" prefWidth="600.0" />
          </children>
       </VBox>
    </children>

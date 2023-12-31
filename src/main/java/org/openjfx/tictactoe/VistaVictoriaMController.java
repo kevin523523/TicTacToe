@@ -21,7 +21,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import modelo.Jugador;
 import modelo.JugadorM;
 import modelo.Maquina;
 import modelo.Ruta;
@@ -33,7 +32,7 @@ import org.openjfx.tictactoe.VistaJ1VsMaquinaController.Tablero;
  *
  * @author kevin
  */
-public class VistaVictoriaControllerM implements Initializable {
+public class VistaVictoriaMController implements Initializable {
 
     @FXML
     private static ImageView imgGanador;
@@ -52,30 +51,23 @@ public class VistaVictoriaControllerM implements Initializable {
     private JugadorM jugadorP1 = new JugadorM();
     private Maquina jugador2;
 
-    public VistaVictoriaControllerM() {
+    public VistaVictoriaMController() {
     }
 
-    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, JugadorM jugador1, Maquina jugador2) {
+    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, JugadorM jugador1, Maquina jugadorM) {
         //jugadorP1.setNombre(jugador1.getNombre());
-        this.jugadorGanador = jugadorGanador;
-        this.tablero = tablero;
+        VistaVictoriaMController.jugadorGanador = jugadorGanador;
+        VistaVictoriaMController.tablero = tablero;
         try {
-
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoria.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoriaM.fxml"));
             Parent root = loader.load();
-            //System.out.println("hola3");
-            // Crear una nueva Scene
             Scene scene = new Scene(root);
-            //System.out.println("hola4");
-
-            // Configurar un nuevo Stage
             Stage nuevoStage = new Stage();
             nuevoStage.setScene(scene);
             nuevoStage.setTitle("Vista Ganador");
-            // Mostrar el nuevo Stage
-
             nuevoStage.show();
         } catch (IOException ex) {
+
         }
     }
 
@@ -106,26 +98,27 @@ public class VistaVictoriaControllerM implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+            System.out.println("aqui");
             InputStream input1;
             InputStream input2;
-            if (VistaVictoriaControllerM.jugadorGanador == TipoImagen.EQUIS) {
+            if (jugadorGanador == TipoImagen.EQUIS) {
                 input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORMAQUINA).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
                 imgGanador = new ImageView(imagen2);
-                lblGanador.setText(VistaJugarController.jugador1.getNombre());
+                lblGanador.setText(VistaJ1VsMaquinaController.jugador1.getNombre());
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
-            } else if (VistaVictoriaControllerM.jugadorGanador == TipoImagen.CIRCULO) {
+            } else if (jugadorGanador == TipoImagen.CIRCULO) {
                 input1 = App.class.getResource(Ruta.CIRCULO).openStream();
                 input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
                 imgGanador = new ImageView(imagen2);
-                lblGanador.setText(VistaJugarController.jugador2.getNombre());
+                lblGanador.setText(VistaJ1VsMaquinaController.jugadorM.getNombre());
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
             } else {
@@ -135,7 +128,7 @@ public class VistaVictoriaControllerM implements Initializable {
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
                 imgGanador = new ImageView(imagen2);
-                lblGanador.setText(VistaJugarController.jugador2.getNombre());
+                //lblGanador.setText(VistaJ1VsMaquinaController.jugadorM.getNombre());
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
                 lblGanador.setText("Empate");

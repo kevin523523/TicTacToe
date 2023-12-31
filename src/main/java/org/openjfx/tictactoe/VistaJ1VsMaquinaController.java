@@ -71,8 +71,6 @@ public class VistaJ1VsMaquinaController implements Initializable {
     private ImageView imgFrontal;
     @FXML
     private AnchorPane paneCuadroFrontal;
-    @FXML
-    private AnchorPane nuevoPaneCuadro;
 
     public static JugadorM jugador1;
     public static Maquina jugadorM;
@@ -96,6 +94,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
         public void borrarImagenes() {
             paneTablero.getChildren().clear();
             paneCuadroFrontal.getChildren().clear();
+            hBoxTablero.getChildren().clear();
         }
 
         public void desactivarCuadros(boolean valor) {
@@ -107,7 +106,6 @@ public class VistaJ1VsMaquinaController implements Initializable {
         public void reiniciarTablero(TipoImagen ganador) {
             desactivarCuadros(false);
             borrarImagenes();
-            System.out.println(ganador);
             if (ganador == TipoImagen.EQUIS) {
                 int puntajeNuevo = Integer.parseInt(lblPuntaje1.getText()) + 1;
                 lblPuntaje1.setText(String.valueOf(puntajeNuevo));
@@ -116,8 +114,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 lblPuntaje2.setText(String.valueOf(puntajeNuevo));
             }
             if (turnoPartida == TipoImagen.EQUIS) {
-                jugadorActual = TipoImagen.CIRCULO;
-                turnoPartida = TipoImagen.CIRCULO;
+                jugadorActual = TipoImagen.EQUIS;
+                turnoPartida = TipoImagen.EQUIS;
             } else if (turnoPartida == TipoImagen.CIRCULO) {
                 jugadorActual = TipoImagen.EQUIS;
                 turnoPartida = TipoImagen.EQUIS;
@@ -125,6 +123,16 @@ public class VistaJ1VsMaquinaController implements Initializable {
             cambiarEstilos(jugadorActual.EQUIS);
             jugador1.limpiarTablero();
             jugadorM.limpiarTablero();
+            /*if (turnoPartida == TipoImagen.CIRCULO) {
+                String[][] nv = new String[3][3];
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        nv[i][j] = "";
+                    }
+                }
+                jugarTurnoMaquinaPrimero(nv);
+            }*/
+
         }
 
         public void resultado(TipoImagen tipoImagenResultado, TipoImagen jugadorGanador, AnchorPane paneCuadroFrontal) {
@@ -135,7 +143,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                         @Override
                         public void run() {
                             Platform.runLater(() -> {
-                                VistaVictoriaControllerM v1 = new VistaVictoriaControllerM();
+                                VistaVictoriaMController v1 = new VistaVictoriaMController();
                                 v1.pintarGanador(tipoImagenResultado, tablero, jugador1, jugadorM);
                             });
                         }
@@ -162,9 +170,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
                     paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50); // Establecer el nuevo ancho
                     paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
-                    //paneCuadroFrontal.setLayoutX(0);
-                    //paneCuadroFrontal.setLayoutY(0);
-                    //paneTablero.getChildren().add(paneCuadroFrontal);
+                    paneTablero.getChildren().add(paneCuadroFrontal);
 
                     desactivarCuadros(true);
 
@@ -173,7 +179,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                         @Override
                         public void run() {
                             Platform.runLater(() -> {
-                                VistaVictoriaControllerM v1 = new VistaVictoriaControllerM();
+                                VistaVictoriaMController v1 = new VistaVictoriaMController();
                                 v1.pintarGanador(jugadorGanador, tablero, jugador1, jugadorM);
                             });
 
@@ -189,12 +195,14 @@ public class VistaJ1VsMaquinaController implements Initializable {
         }
 
         public void crearTablero() {
+            paneTablero = new AnchorPane();
             paneTablero.setStyle("-fx-border-color: #004080; -fx-border-width: 10px;-fx-background-color: #FFFF99");
             //paneCuadroFrontal.setStyle("-fx-background-color: #86ffff");
             paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
             paneCuadroFrontal.setPrefHeight(350);
             paneCuadroFrontal.setLayoutX(15);
             paneCuadroFrontal.setLayoutY(15);
+            hBoxTablero.getChildren().add(paneTablero);
 
         }
 
@@ -232,13 +240,20 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 jugador1.getTablero()[cuadro.getI()][cuadro.getJ()] = "x";
                 tipoImagenResultado = jugador1.tresEnRaya(jugadorM);
                 setTipoImagen(TipoImagen.EQUIS);
-                cuadro.paintComponent(paneCuadro);
+                AnchorPane paneCuadroD = cuadro.paintComponent(paneCuadro);
+                int index = 3 * cuadro.getI() + cuadro.getJ();
+                //Node pane = paneTablero.getChildren().get(index);
                 jugadorActual = TipoImagen.CIRCULO;
+                paneTablero.getChildren().remove(index);
+                paneTablero.getChildren().add(index, paneCuadroD);
                 cambiarEstilos(TipoImagen.CIRCULO);
                 resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
                 cuadro.setDibujado(true);
+            }
+            if (jugadorActual == TipoImagen.CIRCULO && tipoImagenResultado != TipoImagen.EMPATE && tipoImagenResultado != TipoImagen.LINEA1 && tipoImagenResultado != TipoImagen.LINEA2 && tipoImagenResultado != TipoImagen.LINEA3 && tipoImagenResultado != TipoImagen.LINEA4 && tipoImagenResultado != TipoImagen.LINEA5 && tipoImagenResultado != TipoImagen.LINEA6 && tipoImagenResultado != TipoImagen.LINEA7 && tipoImagenResultado != TipoImagen.LINEA8) {
                 jugarTurnoMaquina(jugador1);
             }
+
         }
 
         public void crearEventosCuadro(AnchorPane paneCuadro, Cuadro cuadro) {
@@ -254,21 +269,27 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         public void jugarTurnoMaquina(JugadorM jugador) {
             jugadorActual = TipoImagen.EQUIS;
-            turnoMaquina(jugador);
+            turnoMaquina(jugador.getTablero());
             cambiarEstilos(TipoImagen.EQUIS);
             TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
             resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
         }
 
+        public void jugarTurnoMaquinaPrimero(String tablero[][]) {
+            jugadorActual = TipoImagen.EQUIS;
+            turnoMaquina(tablero);
+            cambiarEstilos(TipoImagen.EQUIS);
+            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+            resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+        }
 
-        public void turnoMaquina(JugadorM jugador) {
-            Tree<String[][]> padre = generarEstadosActual(jugador.getTablero());
+        public void turnoMaquina(String[][] tableroJ) {
+
+            Tree<String[][]> padre = generarEstadosActual(tableroJ);
             ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
             try {
                 jugadorM.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
-                System.out.println(posicionCuadro.get(0));
-                System.out.println(posicionCuadro.get(1));
-
+                jugador1.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "AQUI";
                 TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
                 setTipoImagen(TipoImagen.CIRCULO);
                 Cuadro cuadro = new Cuadro();
@@ -276,10 +297,10 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 cuadro.setJ(posicionCuadro.get(1));
                 InputStream input = App.class.getResource(Ruta.CIRCULO).openStream();
                 Image imagen = new Image(input, 80, 80, true, true);
-
                 img = new ImageView(imagen);
+                AnchorPane nuevoPaneCuadro = new AnchorPane();
                 nuevoPaneCuadro.getChildren().add(img);
-                int index = 3*posicionCuadro.get(0)+ posicionCuadro.get(1)+1;
+                int index = 3 * posicionCuadro.get(0) + posicionCuadro.get(1);
                 Node pane = paneTablero.getChildren().get(index);
                 double x = pane.getLayoutX();
                 double y = pane.getLayoutY();
@@ -288,8 +309,14 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 nuevoPaneCuadro.setPrefWidth(100);
                 nuevoPaneCuadro.setPrefHeight(100);
                 nuevoPaneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
-                paneTablero.getChildren().remove(index);
+                //if (!paneTablero.getChildren().contains(nuevoPaneCuadro)) {
+                paneTablero.getChildren().remove(pane);
                 paneTablero.getChildren().add(index, nuevoPaneCuadro);
+                //}
+                System.out.println(posicionCuadro);
+                posicionCuadro.clear();
+                padre.getRootNode().getChildren().clear();
+
                 cuadro.setDibujado(true);
             } catch (NullPointerException | IOException ex) {
                 img = new ImageView();
@@ -339,28 +366,35 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         public ArrayList<Integer> utilidadMaxima(Tree<String[][]> tree) {
             List<Tree<String[][]>> hijosPadre = tree.getRootNode().getChildren();
-            ArrayList<Integer> utilidadesMinimas = new ArrayList<>();
+            ArrayList<ArrayList<Integer>> arregloUtilidades = new ArrayList<>();
+            ArrayList<Integer> arregloUtilidadesMiniminas = new ArrayList<>();
             ArrayList<Integer> posicionCuadro = new ArrayList<>();
-
             for (Tree<String[][]> child : hijosPadre) {
                 List<Tree<String[][]>> sobrinos = child.getRootNode().getChildren();
+                ArrayList<Integer> arreglo = new ArrayList<>();
                 for (Tree<String[][]> sobrino : sobrinos) {
-                    String tableroOponente[][] = child.getRoot();
-                    String tableroJugador[][] = sobrino.getRoot();
-                    int utilidad = PjugadorX(tableroJugador) - PjugadorO(tableroOponente);
-                    utilidadesMinimas.add(utilidad);
+                    String tableroJugador[][] = child.getRoot();
+                    String tableroOponente[][] = sobrino.getRoot();
+                    int utilidad = PjugadorX(tableroOponente) - PjugadorO(tableroJugador);
+                    arreglo.add(utilidad);
                 }
+                arregloUtilidades.add(arreglo);
             }
-            if (!utilidadesMinimas.isEmpty()) {
-                int maximo = Collections.max(utilidadesMinimas);
-                int indice = utilidadesMinimas.indexOf(maximo);
+            if (!arregloUtilidades.isEmpty()) {
+                for (ArrayList<Integer> arreglo : arregloUtilidades) {
+                    int minimo = Collections.min(arreglo);
+                    arregloUtilidadesMiniminas.add(minimo);
+                }
+                int maximo = Collections.min(arregloUtilidadesMiniminas);
+                int indice = arregloUtilidadesMiniminas.indexOf(maximo);
                 Tree<String[][]> movimientoSeleccionado = hijosPadre.get(indice);
                 String[][] tableroAct = movimientoSeleccionado.getRoot();
                 int posicionI = 0;
                 int posicionJ = 0;
+                System.out.println(movimientoSeleccionado.getRootNode().toString());
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 3; j++) {
-                        if (tableroAct[i][j] == "o") {
+                        if (tableroAct[i][j] == "o" && tableroAct[i][j] != "AQUI") {
                             posicionI = i;
                             posicionJ = j;
                         }
@@ -369,8 +403,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 posicionCuadro.add(posicionI);
                 posicionCuadro.add(posicionJ);
                 return posicionCuadro;
-
             } else {
+
                 return posicionCuadro;
             }
         }
@@ -378,18 +412,18 @@ public class VistaJ1VsMaquinaController implements Initializable {
         public int PjugadorX(String tableroOponente[][]) {
             int pjugador = 0;
             for (int i = 0; i < 3; i++) {
-                if ((tableroOponente[i][0] == "" || tableroOponente[i][0] == "x") && (tableroOponente[i][1] == "" || tableroOponente[i][1] == "x") && (tableroOponente[i][2] == "" || tableroOponente[i][2] == "x")) {
+                if (tableroOponente[i][0] != "o" && tableroOponente[i][1] != "o" && tableroOponente[i][2] != "o") {
                     pjugador++;
                 }
-                if ((tableroOponente[0][i] == "" || tableroOponente[0][i] == "x") && (tableroOponente[1][i] == "" || tableroOponente[1][i] == "x") && (tableroOponente[2][i] == "" || tableroOponente[2][i] == "x")) {
+                if (tableroOponente[0][i] != "o" && tableroOponente[1][i] != "o" && tableroOponente[2][i] != "o") {
                     pjugador++;
                 }
             }
 
-            if ((tableroOponente[0][0] == "" || tableroOponente[0][0] == "x") && (tableroOponente[1][1] == "" || tableroOponente[1][1] == "x") && (tableroOponente[2][2] == "" || tableroOponente[2][2] == "x")) {
+            if (tableroOponente[0][0] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][2] != "o") {
                 pjugador++;
             }
-            if ((tableroOponente[0][2] == "" || tableroOponente[0][2] == "x") && (tableroOponente[1][1] == "" || tableroOponente[1][1] == "x") && (tableroOponente[2][0] == "" || tableroOponente[2][0] == "x")) {
+            if (tableroOponente[0][2] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][0] != "o") {
                 pjugador++;
             }
             return pjugador;
@@ -398,18 +432,18 @@ public class VistaJ1VsMaquinaController implements Initializable {
         public int PjugadorO(String tableroOponente[][]) {
             int pjugador = 0;
             for (int i = 0; i < 3; i++) {
-                if ((tableroOponente[i][0] == "" || tableroOponente[i][0] == "o") && (tableroOponente[i][1] == "" || tableroOponente[i][1] == "o") && (tableroOponente[i][2] == "" || tableroOponente[i][2] == "o")) {
+                if (tableroOponente[i][0] != "x" && tableroOponente[i][1] != "x" && tableroOponente[i][2] != "x") {
                     pjugador++;
                 }
-                if ((tableroOponente[0][i] == "" || tableroOponente[0][i] == "o") && (tableroOponente[1][i] == "" || tableroOponente[1][i] == "o") && (tableroOponente[2][i] == "" || tableroOponente[2][i] == "o")) {
+                if (tableroOponente[0][i] != "x" && tableroOponente[1][i] != "x" && tableroOponente[2][i] != "x") {
                     pjugador++;
                 }
             }
 
-            if ((tableroOponente[0][0] == "" || tableroOponente[0][0] == "o") && (tableroOponente[1][1] == "" || tableroOponente[1][1] == "o") && (tableroOponente[2][2] == "" || tableroOponente[2][2] == "o")) {
+            if (tableroOponente[0][0] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][2] != "x") {
                 pjugador++;
             }
-            if ((tableroOponente[0][2] == "" || tableroOponente[0][2] == "o") && (tableroOponente[1][1] == "" || tableroOponente[1][1] == "o") && (tableroOponente[2][0] == "" || tableroOponente[2][0] == "o")) {
+            if (tableroOponente[0][2] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][0] != "x") {
                 pjugador++;
             }
             return pjugador;
@@ -498,7 +532,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
             this.dibujado = dibujado;
         }
 
-        public void paintComponent(AnchorPane paneCuadro) {
+        public AnchorPane paintComponent(AnchorPane paneCuadro) {
             try {
                 InputStream input = null;
                 if (tipoImagen == TipoImagen.CIRCULO) {
@@ -528,6 +562,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
             } catch (NullPointerException | IOException ex) {
                 img = new ImageView();
             }
+            return paneCuadro;
 
         }
 
@@ -575,8 +610,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        nuevoPaneCuadro = new AnchorPane();
-        paneCuadroFrontal = new AnchorPane(); 
+        paneCuadroFrontal = new AnchorPane();
         jugadorActual = TipoImagen.EQUIS;
         turnoPartida = TipoImagen.EQUIS;
         tablero = new Tablero();

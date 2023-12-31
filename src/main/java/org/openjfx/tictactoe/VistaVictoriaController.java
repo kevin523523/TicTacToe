@@ -32,7 +32,6 @@ import org.openjfx.tictactoe.VistaJugarController.Tablero;
  * @author kevin
  */
 public class VistaVictoriaController implements Initializable {
-
     @FXML
     private static ImageView imgGanador;
     @FXML
@@ -54,18 +53,14 @@ public class VistaVictoriaController implements Initializable {
     }
 
     public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, Jugador jugador1, Jugador jugador2) {
-        //jugadorP1.setNombre(jugador1.getNombre());
+        jugadorP1.setNombre(jugador1.getNombre());
         this.jugadorGanador = jugadorGanador;
         this.tablero = tablero;
         try {
-
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoria.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoriaM.fxml"));
             Parent root = loader.load();
-            //System.out.println("hola3");
             // Crear una nueva Scene
             Scene scene = new Scene(root);
-            //System.out.println("hola4");
-
             // Configurar un nuevo Stage
             Stage nuevoStage = new Stage();
             nuevoStage.setScene(scene);
