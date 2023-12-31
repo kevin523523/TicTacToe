@@ -46,16 +46,16 @@ public class VistaPrincipalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();
-            InputStream jugador2 = App.class.getResource("jugadorUno.png").openStream();
+            InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
+            InputStream jugador2 = App.class.getResource("jugadorDos.png").openStream();
             InputStream jugadorM = App.class.getResource("maquina.png").openStream();
-            InputStream jugador1M = App.class.getResource("jugadorDos.png").openStream();
+            InputStream jugador1M = App.class.getResource("jugadorUno.png").openStream();
             Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
             Image imgJugador1M = new Image(jugador1M, 50, 50, true, true);
             Image imgJugador2 = new Image(jugador2, 50, 50, true, true);
             Image imgJugadorM = new Image(jugadorM, 80, 80, true, true);
             jugador1Img = new ImageView(imgJugador1);
-            jugador1MImg = new ImageView(imgJugador1);
+            jugador1MImg = new ImageView(imgJugador1M);
             jugador2Img = new ImageView(imgJugador2);
             jugadorMImg = new ImageView(imgJugadorM);
         } catch (NullPointerException | IOException ex) {

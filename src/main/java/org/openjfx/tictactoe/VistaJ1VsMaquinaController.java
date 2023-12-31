@@ -272,6 +272,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
             turnoMaquina(jugador.getTablero());
             cambiarEstilos(TipoImagen.EQUIS);
             TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+            setTipoImagen(TipoImagen.CIRCULO);
             resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
         }
 
@@ -290,8 +291,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
             try {
                 jugadorM.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
                 jugador1.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "AQUI";
-                TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-                setTipoImagen(TipoImagen.CIRCULO);
+                //TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+                
                 Cuadro cuadro = new Cuadro();
                 cuadro.setI(posicionCuadro.get(0));
                 cuadro.setJ(posicionCuadro.get(1));
@@ -455,7 +456,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 InputStream jugadorAuxiliarM = App.class.getResource(Ruta.JUGADORAUXILLARM).openStream();
                 Image imgAuxiliar = new Image(jugadorAuxiliar, 50, 50, true, true);
                 Image imgAuxiliarM = new Image(jugadorAuxiliarM, 80, 80, true, true);
-                InputStream jugador1 = App.class.getResource("jugadorDos.png").openStream();
+                InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
                 InputStream jugador2 = App.class.getResource("maquina.png").openStream();
                 Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
                 Image imgJugador2 = new Image(jugador2, 50, 50, true, true);
