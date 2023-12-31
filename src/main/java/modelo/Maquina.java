@@ -113,34 +113,4 @@ public class Maquina {
         return null;
     }
 
-    public int utilidad(Tablero tablero) {
-        int tableroJugador[][] = tablero.getJugador1().getTablero();
-        int tableroOponente[][] = tablero.getJugador2().getTablero();
-        int pJugadorJ1 = Pjugador(tableroOponente);
-        int pOponente = Pjugador(tableroJugador);
-
-        return pJugadorJ1 - pOponente;
-
-    }
-
-    public int Pjugador(int tableroOponente[][]) {
-        int pjugador = 0;
-        for (int i = 0; i < tableroOponente.length; i++) {
-            if (tableroOponente[i][0] == 0 && tableroOponente[i][1] == 0 && tableroOponente[i][2] == 0) {
-                pjugador++;
-            }
-            if (tableroOponente[0][i] == 0 && tableroOponente[1][i] == 0 && tableroOponente[2][i] == 0) {
-                pjugador++;
-            }
-        }
-        if (tableroOponente[0][0] == 0 && tableroOponente[1][1] == 0 && tableroOponente[2][2] == 0) {
-            pjugador++;
-        }
-        if (tableroOponente[0][2] == 0 && tableroOponente[1][1] == 0 && tableroOponente[2][0] == 0) {
-            pjugador++;
-        }
-        return pjugador;
-
-    }
-
 }

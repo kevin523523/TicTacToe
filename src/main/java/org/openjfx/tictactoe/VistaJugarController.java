@@ -162,8 +162,8 @@ public class VistaJugarController implements Initializable {
                         @Override
                         public void run() {
                             Platform.runLater(() -> {
-                            VistaVictoriaController v1 = new VistaVictoriaController();
-                            v1.pintarGanador(jugadorGanador, tablero, jugador1, jugador2);
+                                VistaVictoriaController v1 = new VistaVictoriaController();
+                                v1.pintarGanador(jugadorGanador, tablero, jugador1, jugador2);
                             });
 
                         }
@@ -453,5 +453,7 @@ public class VistaJugarController implements Initializable {
         lblJugador2.setText(jugador2.getNombre());
 
     }
+
+
 
 }
