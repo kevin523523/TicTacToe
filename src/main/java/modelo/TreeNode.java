@@ -41,4 +41,24 @@ public class TreeNode<E> {
         children.add(child);
     }
 
+    @Override
+    public String toString() {
+        if (content instanceof String[][]) {
+            return arrayToString((String[][]) content);
+        } else {
+            return content.toString();
+        }
+    }
+
+    private String arrayToString(String[][] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String[] row : array) {
+            for (String value : row) {
+                stringBuilder.append(value).append(" ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
 }

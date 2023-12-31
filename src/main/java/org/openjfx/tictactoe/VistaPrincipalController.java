@@ -16,6 +16,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import modelo.Jugador;
+import modelo.JugadorM;
+import modelo.Maquina;
+import modelo.TipoImagen;
 
 /**
  * FXML Controller class
@@ -23,6 +27,7 @@ import javafx.stage.Stage;
  * @author kevin
  */
 public class VistaPrincipalController implements Initializable {
+
     @FXML
     AnchorPane panePantalla;
     @FXML
@@ -75,7 +80,16 @@ public class VistaPrincipalController implements Initializable {
     @FXML
     public void switchToInicio(MouseEvent event) throws IOException {
         App.setRoot("VistaInicio");
+    }
 
+    @FXML
+    public void switchTo1vsMaquina(MouseEvent event) throws IOException {
+        JugadorM jugador1 = new JugadorM(TipoImagen.EQUIS);
+        jugador1.setNombre("JUGADOR");
+        Maquina maquina = new Maquina(TipoImagen.CIRCULO);
+        maquina.setNombre("MAQUINA");
+        VistaJ1VsMaquinaController.EnviarJugador(jugador1, maquina);
+        App.setRoot("VistaJ1vsMaquina");
     }
 
 }

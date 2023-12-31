@@ -4,31 +4,28 @@
  */
 package modelo;
 
-import org.openjfx.tictactoe.VistaJugarController;
-import org.openjfx.tictactoe.VistaJugarController.Tablero;
-
 /**
  *
  * @author kevin
  */
-public class Maquina {
+public class JugadorM {
 
     private String nombre;
     private TipoImagen tipoImagen;
     private String tablero[][];
 
-    public Maquina() {
+    public JugadorM() {
         tablero = new String[3][3];
         limpiarTablero();
     }
 
-    public Maquina(TipoImagen tipoImagen) {
+    public JugadorM(TipoImagen tipoImagen) {
         this.tipoImagen = tipoImagen;
         tablero = new String[3][3];
         limpiarTablero();
     }
 
-    public Maquina(String nombre, TipoImagen tipoImagen) {
+    public JugadorM(String nombre, TipoImagen tipoImagen) {
         this.nombre = nombre;
         this.tipoImagen = tipoImagen;
         tablero = new String[3][3];
@@ -67,39 +64,39 @@ public class Maquina {
         this.tablero = tablero;
     }
 
-    public TipoImagen tresEnRaya(JugadorM jugadorRival) {
-        if (tablero[0][0] == "o" && tablero[0][1] == "o" && tablero[0][2] == "o") {
+    public TipoImagen tresEnRaya(Maquina jugadorRival) {
+        if (tablero[0][0] == "x" && tablero[0][1] == "x" && tablero[0][2] == "x") {
             return TipoImagen.LINEA1;
         }
-        if (tablero[1][0] == "o" && tablero[1][1] == "0" && tablero[1][2] == "0") {
+        if (tablero[1][0] == "x" && tablero[1][1] == "x" && tablero[1][2] == "x") {
             return TipoImagen.LINEA2;
         }
-        if (tablero[2][0] == "o" && tablero[2][1] == "0" && tablero[2][2] == "0") {
+        if (tablero[2][0] == "x" && tablero[2][1] == "x" && tablero[2][2] == "x") {
             return TipoImagen.LINEA3;
         }
-        if (tablero[0][0] == "o" && tablero[1][0] == "0" && tablero[2][0] == "0") {
+        if (tablero[0][0] == "x" && tablero[1][0] == "x" && tablero[2][0] == "x") {
             return TipoImagen.LINEA4;
         }
-        if (tablero[0][1] == "o" && tablero[1][1] == "0" && tablero[2][1] == "0") {
+        if (tablero[0][1] == "x" && tablero[1][1] == "x" && tablero[2][1] == "x") {
             return TipoImagen.LINEA5;
         }
-        if (tablero[0][2] == "o" && tablero[1][2] == "0" && tablero[2][2] == "0") {
+        if (tablero[0][2] == "x" && tablero[1][2] == "x" && tablero[2][2] == "x") {
             return TipoImagen.LINEA6;
         }
-        if (tablero[2][0] == "o" && tablero[1][1] == "0" && tablero[0][2] == "0") {
+        if (tablero[2][0] == "x" && tablero[1][1] == "x" && tablero[0][2] == "x") {
             return TipoImagen.LINEA7;
         }
-        if (tablero[0][0] == "o" && tablero[1][1] == "0" && tablero[2][2] == "0") {
+        if (tablero[0][0] == "x" && tablero[1][1] == "x" && tablero[2][2] == "x") {
             return TipoImagen.LINEA8;
         }
 
         int contador = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (tablero[i][j] == "o") {
+                if (tablero[i][j] == "x") {
                     contador++;
                 }
-                if (jugadorRival.getTablero()[i][j] == "x") {
+                if (jugadorRival.getTablero()[i][j] == "o") {
                     contador++;
                 }
 

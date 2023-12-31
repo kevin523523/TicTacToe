@@ -43,5 +43,6 @@ public class Tree<E> {
     public boolean isLeaf() {
         return this.root.getChildren().isEmpty();
     }
+    
 
 }

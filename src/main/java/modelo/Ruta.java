@@ -13,6 +13,7 @@ public class Ruta {
     public static final String CIRCULO = "Circulo.png";
     public static final String JUGADOREQUIS = "jugadorUno.png";
     public static final String JUGADORCIRCULO = "jugadorDos.png";
+    public static final String JUGADORMAQUINA = "maquina.png";
     public static final String JUGADORAUXILLAR = "JugadorAuxillar.png";
     
     public static String LINEA1 = "CirculoLINEA1.png";
@@ -23,6 +24,7 @@ public class Ruta {
     public static String LINEA6 = "CirculoLINEA6.png";
     public static String LINEA7 = "CirculoLINEA7.png";
     public static String LINEA8 = "CirculoLINEA8.png";
+    public static String JUGADORAUXILLARM = "maquinaAuxiliar.png";
     
     public static void cambiarRutas(TipoImagen tipoImagen){
         if(tipoImagen==TipoImagen.CIRCULO){

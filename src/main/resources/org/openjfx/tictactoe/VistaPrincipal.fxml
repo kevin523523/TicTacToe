@@ -28,7 +28,7 @@
             </HBox>
             <HBox fx:id="hBox1vsM" alignment="CENTER" prefHeight="59.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" text="1 VS MÁQUINA">
+                  <Button mnemonicParsing="false" onMouseClicked="#switchTo1vsMaquina" text="1 VS MÁQUINA">
                      <font>
                         <Font name="Algerian" size="19.0" />
                      </font>
