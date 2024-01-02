@@ -42,9 +42,9 @@ public class VistaJ1VsMaquinaController implements Initializable {
     @FXML
     private AnchorPane panelFondo;
     @FXML
-    private ImageView jugador1Img;
+    private ImageView maquinaImg;
     @FXML
-    private ImageView jugadorMImag;
+    private ImageView jugador2Img;
     @FXML
     private VBox vBoxJugador1;
     @FXML
@@ -93,7 +93,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         public void borrarImagenes() {
             paneTablero.getChildren().clear();
-            paneCuadroFrontal.getChildren().clear();
+            //paneCuadroFrontal.getChildren().clear();
             hBoxTablero.getChildren().clear();
         }
 
@@ -133,6 +133,46 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 jugarTurnoMaquinaPrimero(nv);
             }*/
 
+        }
+
+        public void crearTablero() {
+            paneTablero = new AnchorPane();
+            paneTablero.setStyle("-fx-border-color: #004080; -fx-border-width: 10px;-fx-background-color: #FFFF99");
+            //paneCuadroFrontal.setStyle("-fx-background-color: #86ffff");
+            //paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
+            //paneCuadroFrontal.setPrefHeight(350);
+            //paneCuadroFrontal.setLayoutX(15);
+           //paneCuadroFrontal.setLayoutY(15);
+            hBoxTablero.getChildren().add(paneTablero);
+
+        }
+
+        public void crearCuadrosInternos() {
+            int margen = 20;
+            int anchoCI = 100;
+            int alturaCI = 100;
+            int x = margen;
+            int y = margen;
+            for (int i = 0; i < 3; i++) {
+                x = margen;
+                for (int j = 0; j < 3; j++) {
+                    AnchorPane paneCuadro = new AnchorPane();
+                    Cuadro cuadro = new Cuadro();
+                    cuadros.add(cuadro);
+                    paneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
+                    paneCuadro.setLayoutX(x);
+                    paneCuadro.setLayoutY(y);
+                    cuadro.setI(i);
+                    cuadro.setJ(j);
+                    paneCuadro.setCursor(Cursor.HAND);
+                    paneCuadro.setPrefWidth(anchoCI); // Establecer el nuevo ancho
+                    paneCuadro.setPrefHeight(alturaCI); // Establecer la nueva altura
+                    crearEventosCuadro(paneCuadro, cuadro);
+                    paneTablero.getChildren().add(paneCuadro);
+                    x += (margen + anchoCI);
+                }
+                y += (margen + alturaCI);
+            }
         }
 
         public void resultado(TipoImagen tipoImagenResultado, TipoImagen jugadorGanador, AnchorPane paneCuadroFrontal) {
@@ -180,7 +220,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                         public void run() {
                             Platform.runLater(() -> {
                                 VistaVictoriaMController v1 = new VistaVictoriaMController();
-                                v1.pintarGanador(jugadorGanador, tablero, jugador1, jugadorM);
+                                v1.pintarGanador(jugadorGanador, tablero, maquina, jugador2);
                             });
 
                         }
@@ -194,51 +234,11 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         }
 
-        public void crearTablero() {
-            paneTablero = new AnchorPane();
-            paneTablero.setStyle("-fx-border-color: #004080; -fx-border-width: 10px;-fx-background-color: #FFFF99");
-            //paneCuadroFrontal.setStyle("-fx-background-color: #86ffff");
-            paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
-            paneCuadroFrontal.setPrefHeight(350);
-            paneCuadroFrontal.setLayoutX(15);
-            paneCuadroFrontal.setLayoutY(15);
-            hBoxTablero.getChildren().add(paneTablero);
-
-        }
-
-        public void crearCuadrosInternos() {
-            int margen = 20;
-            int anchoCI = 100;
-            int alturaCI = 100;
-            int x = margen;
-            int y = margen;
-            for (int i = 0; i < 3; i++) {
-                x = margen;
-                for (int j = 0; j < 3; j++) {
-                    AnchorPane paneCuadro = new AnchorPane();
-                    Cuadro cuadro = new Cuadro();
-                    cuadros.add(cuadro);
-                    paneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
-                    paneCuadro.setLayoutX(x);
-                    paneCuadro.setLayoutY(y);
-                    cuadro.setI(i);
-                    cuadro.setJ(j);
-                    paneCuadro.setCursor(Cursor.HAND);
-                    paneCuadro.setPrefWidth(anchoCI); // Establecer el nuevo ancho
-                    paneCuadro.setPrefHeight(alturaCI); // Establecer la nueva altura
-                    crearEventosCuadro(paneCuadro, cuadro);
-                    paneTablero.getChildren().add(paneCuadro);
-                    x += (margen + anchoCI);
-                }
-                y += (margen + alturaCI);
-            }
-        }
-
         public void jugarTurnoHumano(AnchorPane paneCuadro, Cuadro cuadro) {
             TipoImagen tipoImagenResultado = null;
             if (jugadorActual == TipoImagen.EQUIS) {
-                jugador1.getTablero()[cuadro.getI()][cuadro.getJ()] = "x";
-                tipoImagenResultado = jugador1.tresEnRaya(jugadorM);
+                maquina.getTablero()[cuadro.getI()][cuadro.getJ()] = "x";
+                tipoImagenResultado = maquina.tresEnRaya(jugador2);
                 setTipoImagen(TipoImagen.EQUIS);
                 AnchorPane paneCuadroD = cuadro.paintComponent(paneCuadro);
                 int index = 3 * cuadro.getI() + cuadro.getJ();
@@ -247,13 +247,9 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 paneTablero.getChildren().remove(index);
                 paneTablero.getChildren().add(index, paneCuadroD);
                 cambiarEstilos(TipoImagen.CIRCULO);
-                resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
+                tablero.resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
                 cuadro.setDibujado(true);
             }
-            if (jugadorActual == TipoImagen.CIRCULO && tipoImagenResultado != TipoImagen.EMPATE && tipoImagenResultado != TipoImagen.LINEA1 && tipoImagenResultado != TipoImagen.LINEA2 && tipoImagenResultado != TipoImagen.LINEA3 && tipoImagenResultado != TipoImagen.LINEA4 && tipoImagenResultado != TipoImagen.LINEA5 && tipoImagenResultado != TipoImagen.LINEA6 && tipoImagenResultado != TipoImagen.LINEA7 && tipoImagenResultado != TipoImagen.LINEA8) {
-                jugarTurnoMaquina(jugador1);
-            }
-
         }
 
         public void crearEventosCuadro(AnchorPane paneCuadro, Cuadro cuadro) {
@@ -267,237 +263,21 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         }
 
-        public void jugarTurnoMaquina(JugadorM jugador) {
-            jugadorActual = TipoImagen.EQUIS;
-            turnoMaquina(jugador.getTablero());
-            cambiarEstilos(TipoImagen.EQUIS);
-            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-            setTipoImagen(TipoImagen.CIRCULO);
-            resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+        public Maquina getJugador1() {
+            return maquina;
         }
 
-        public void jugarTurnoMaquinaPrimero(String tablero[][]) {
-            jugadorActual = TipoImagen.EQUIS;
-            turnoMaquina(tablero);
-            cambiarEstilos(TipoImagen.EQUIS);
-            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-            resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+        public void setJugador1(Maquina maquina) {
+            VistaJ1VsMaquinaController.maquina = maquina;
         }
 
-        public void turnoMaquina(String[][] tableroJ) {
-
-            Tree<String[][]> padre = generarEstadosActual(tableroJ);
-            ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
-            try {
-                jugadorM.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
-                jugador1.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "AQUI";
-                //TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-                
-                Cuadro cuadro = new Cuadro();
-                cuadro.setI(posicionCuadro.get(0));
-                cuadro.setJ(posicionCuadro.get(1));
-                InputStream input = App.class.getResource(Ruta.CIRCULO).openStream();
-                Image imagen = new Image(input, 80, 80, true, true);
-                img = new ImageView(imagen);
-                AnchorPane nuevoPaneCuadro = new AnchorPane();
-                nuevoPaneCuadro.getChildren().add(img);
-                int index = 3 * posicionCuadro.get(0) + posicionCuadro.get(1);
-                Node pane = paneTablero.getChildren().get(index);
-                double x = pane.getLayoutX();
-                double y = pane.getLayoutY();
-                nuevoPaneCuadro.setLayoutX(x);
-                nuevoPaneCuadro.setLayoutY(y);
-                nuevoPaneCuadro.setPrefWidth(100);
-                nuevoPaneCuadro.setPrefHeight(100);
-                nuevoPaneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
-                //if (!paneTablero.getChildren().contains(nuevoPaneCuadro)) {
-                paneTablero.getChildren().remove(pane);
-                paneTablero.getChildren().add(index, nuevoPaneCuadro);
-                //}
-                System.out.println(posicionCuadro);
-                posicionCuadro.clear();
-                padre.getRootNode().getChildren().clear();
-
-                cuadro.setDibujado(true);
-            } catch (NullPointerException | IOException ex) {
-                img = new ImageView();
-            }
+        public JugadorM getJugador2() {
+            return jugador2;
         }
 
-        //OJO
-        public Tree<String[][]> generarEstadosActual(String[][] tableroActual) {
-            Tree<String[][]> tree = new Tree<>(tableroActual);
-
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (tableroActual[i][j] == "") {
-                        String tableroCopia[][] = hacerCopia(tableroActual);
-                        tableroCopia[i][j] = "o";
-                        Tree<String[][]> hijoArbol = new Tree<>(tableroCopia);
-                        tree.getRootNode().addChild(hijoArbol);
-
-                    }
-                }
-            }
-            List<Tree<String[][]>> hijosPadre = tree.getRootNode().getChildren();
-            for (Tree<String[][]> child : hijosPadre) {
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        if (child.getRoot()[i][j] == "") {
-                            String tableroCopia[][] = hacerCopia(child.getRoot());
-                            tableroCopia[i][j] = "x";
-                            Tree<String[][]> hijoArbol = new Tree<>(tableroCopia);
-                            child.getRootNode().addChild(hijoArbol);
-                        }
-                    }
-                }
-
-            }
-
-            return tree;
+        public void setJugador2(JugadorM jugador2) {
+            VistaJ1VsMaquinaController.jugador2 = jugador2;
         }
-
-        public String[][] hacerCopia(String[][] tableroActual) {
-            String[][] tableroCopia = new String[tableroActual.length][];
-            for (int i = 0; i < tableroActual.length; i++) {
-                tableroCopia[i] = tableroActual[i].clone();
-            }
-            return tableroCopia;
-        }
-
-        public ArrayList<Integer> utilidadMaxima(Tree<String[][]> tree) {
-            List<Tree<String[][]>> hijosPadre = tree.getRootNode().getChildren();
-            ArrayList<ArrayList<Integer>> arregloUtilidades = new ArrayList<>();
-            ArrayList<Integer> arregloUtilidadesMiniminas = new ArrayList<>();
-            ArrayList<Integer> posicionCuadro = new ArrayList<>();
-            for (Tree<String[][]> child : hijosPadre) {
-                List<Tree<String[][]>> sobrinos = child.getRootNode().getChildren();
-                ArrayList<Integer> arreglo = new ArrayList<>();
-                for (Tree<String[][]> sobrino : sobrinos) {
-                    String tableroJugador[][] = child.getRoot();
-                    String tableroOponente[][] = sobrino.getRoot();
-                    int utilidad = PjugadorX(tableroOponente) - PjugadorO(tableroJugador);
-                    arreglo.add(utilidad);
-                }
-                arregloUtilidades.add(arreglo);
-            }
-            if (!arregloUtilidades.isEmpty()) {
-                for (ArrayList<Integer> arreglo : arregloUtilidades) {
-                    int minimo = Collections.min(arreglo);
-                    arregloUtilidadesMiniminas.add(minimo);
-                }
-                int maximo = Collections.min(arregloUtilidadesMiniminas);
-                int indice = arregloUtilidadesMiniminas.indexOf(maximo);
-                Tree<String[][]> movimientoSeleccionado = hijosPadre.get(indice);
-                String[][] tableroAct = movimientoSeleccionado.getRoot();
-                int posicionI = 0;
-                int posicionJ = 0;
-                System.out.println(movimientoSeleccionado.getRootNode().toString());
-                for (int i = 0; i < 3; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        if (tableroAct[i][j] == "o" && tableroAct[i][j] != "AQUI") {
-                            posicionI = i;
-                            posicionJ = j;
-                        }
-                    }
-                }
-                posicionCuadro.add(posicionI);
-                posicionCuadro.add(posicionJ);
-                return posicionCuadro;
-            } else {
-
-                return posicionCuadro;
-            }
-        }
-
-        public int PjugadorX(String tableroOponente[][]) {
-            int pjugador = 0;
-            for (int i = 0; i < 3; i++) {
-                if (tableroOponente[i][0] != "o" && tableroOponente[i][1] != "o" && tableroOponente[i][2] != "o") {
-                    pjugador++;
-                }
-                if (tableroOponente[0][i] != "o" && tableroOponente[1][i] != "o" && tableroOponente[2][i] != "o") {
-                    pjugador++;
-                }
-            }
-
-            if (tableroOponente[0][0] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][2] != "o") {
-                pjugador++;
-            }
-            if (tableroOponente[0][2] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][0] != "o") {
-                pjugador++;
-            }
-            return pjugador;
-        }
-
-        public int PjugadorO(String tableroOponente[][]) {
-            int pjugador = 0;
-            for (int i = 0; i < 3; i++) {
-                if (tableroOponente[i][0] != "x" && tableroOponente[i][1] != "x" && tableroOponente[i][2] != "x") {
-                    pjugador++;
-                }
-                if (tableroOponente[0][i] != "x" && tableroOponente[1][i] != "x" && tableroOponente[2][i] != "x") {
-                    pjugador++;
-                }
-            }
-
-            if (tableroOponente[0][0] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][2] != "x") {
-                pjugador++;
-            }
-            if (tableroOponente[0][2] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][0] != "x") {
-                pjugador++;
-            }
-            return pjugador;
-        }
-
-        public void cambiarEstilos(TipoImagen jugadorActual) {
-            try {
-                InputStream jugadorAuxiliar = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
-                InputStream jugadorAuxiliarM = App.class.getResource(Ruta.JUGADORAUXILLARM).openStream();
-                Image imgAuxiliar = new Image(jugadorAuxiliar, 50, 50, true, true);
-                Image imgAuxiliarM = new Image(jugadorAuxiliarM, 80, 80, true, true);
-                InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
-                InputStream jugador2 = App.class.getResource("maquina.png").openStream();
-                Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
-                Image imgJugador2 = new Image(jugador2, 50, 50, true, true);
-
-                if (jugadorActual == TipoImagen.CIRCULO) {
-                    jugador1Img = new ImageView(imgAuxiliar);
-                    vBoxJugador1.getChildren().remove(0);
-                    vBoxJugador1.getChildren().add(0, jugador1Img);
-                    jugadorMImag = new ImageView(imgJugador2);
-                    vBoxJugadorM.getChildren().remove(0);
-                    vBoxJugadorM.getChildren().add(0, jugadorMImag);
-
-                } else {
-                    jugadorMImag = new ImageView(imgAuxiliarM);
-                    vBoxJugadorM.getChildren().remove(0);
-                    vBoxJugadorM.getChildren().add(0, jugadorMImag);
-                    jugador1Img = new ImageView(imgJugador1);
-                    vBoxJugador1.getChildren().remove(0);
-                    vBoxJugador1.getChildren().add(0, jugador1Img);
-                }
-
-            } catch (IOException ex) {
-            }
-        }
-
-        public JugadorM getJugador1() {
-            return jugador1;
-        }
-
-        public void setJugador1(JugadorM jugador1) {
-            VistaJ1VsMaquinaController.jugador1 = jugador1;
-        }
-
-        public Maquina getJugador2() {
-            return jugadorM;
-        }
-
-        public void setJugador2(Maquina jugador2) {
-            VistaJ1VsMaquinaController.jugadorM = jugador2;
-        }
-
     }
 
     public class Cuadro {
@@ -609,46 +389,262 @@ public class VistaJ1VsMaquinaController implements Initializable {
         this.tipoImagen = tipoImagen;
     }
 
+    public void cambiarEstilos(TipoImagen jugadorActual) {
+        try {
+            InputStream jugadorAuxiliarMaquinaInput = App.class.getResource(Ruta.JUGADORAUXILLARMAQUINA).openStream();
+            InputStream jugadorAuxiliarJugador2Input = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
+            Image imgAuxiliarMaquina = new Image(jugadorAuxiliarMaquinaInput, 50, 50, true, true);
+            Image imgAuxiliarJugador2 = new Image(jugadorAuxiliarJugador2Input, 80, 80, true, true);
+            InputStream maquinaInput = App.class.getResource("maquina.png").openStream();
+            InputStream jugador2Input = App.class.getResource("jugadorDos.png").openStream();
+            Image imgJugador1 = new Image(maquinaInput, 50, 50, true, true);
+            Image imgJugador2 = new Image(jugador2Input, 50, 50, true, true);
+
+            if (jugadorActual == TipoImagen.CIRCULO) {
+                maquinaImg = new ImageView(imgAuxiliarMaquina);
+                vBoxJugador1.getChildren().remove(0);
+                vBoxJugador1.getChildren().add(0, maquinaImg);
+                jugador2Img = new ImageView(imgJugador2);
+                vBoxJugadorM.getChildren().remove(0);
+                vBoxJugadorM.getChildren().add(0, maquinaImg);
+
+            } else {
+                jugador2Img = new ImageView(imgAuxiliarJugador2);
+                vBoxJugadorM.getChildren().remove(0);
+                vBoxJugadorM.getChildren().add(0, jugador2Img);
+                jugador2Img = new ImageView(imgJugador1);
+                vBoxJugador1.getChildren().remove(0);
+                vBoxJugador1.getChildren().add(0, jugador2Img);
+            }
+
+        } catch (IOException ex) {
+        }
+    }
+
+    public void jugarTurnoMaquina(JugadorM jugador) {
+        jugadorActual = TipoImagen.CIRCULO;
+        turnoMaquina(jugador.getTablero());
+        cambiarEstilos(TipoImagen.EQUIS);
+        TipoImagen tipoImagenResultado = maquina.tresEnRaya(jugador2);
+        setTipoImagen(TipoImagen.CIRCULO);
+        tablero.resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+    }
+
+    /*public void jugarTurnoMaquinaPrimero(String tablero[][]) {
+            jugadorActual = TipoImagen.EQUIS;
+            turnoMaquina(tablero);
+            cambiarEstilos(TipoImagen.EQUIS);
+            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+            resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+        }*/
+    public void turnoMaquina(String[][] tableroJ) {
+
+        Tree<String[][]> padre = generarEstadosActual(tableroJ);
+        ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
+        try {
+            maquina.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "x";
+            jugador2.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "AQUI";
+            //TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+
+            Cuadro cuadro = new Cuadro();
+            cuadro.setI(posicionCuadro.get(0));
+            cuadro.setJ(posicionCuadro.get(1));
+            InputStream input = App.class.getResource(Ruta.EQUIS).openStream();
+            Image imagen = new Image(input, 80, 80, true, true);
+            img = new ImageView(imagen);
+            AnchorPane nuevoPaneCuadro = new AnchorPane();
+            nuevoPaneCuadro.getChildren().add(img);
+            int index = 3 * posicionCuadro.get(0) + posicionCuadro.get(1);
+            Node pane = paneTablero.getChildren().get(index);
+            double x = pane.getLayoutX();
+            double y = pane.getLayoutY();
+            nuevoPaneCuadro.setLayoutX(x);
+            nuevoPaneCuadro.setLayoutY(y);
+            nuevoPaneCuadro.setPrefWidth(100);
+            nuevoPaneCuadro.setPrefHeight(100);
+            nuevoPaneCuadro.setStyle(" -fx-border-width: 10px;-fx-background-color: #007ACC");
+            //if (!paneTablero.getChildren().contains(nuevoPaneCuadro)) {
+            paneTablero.getChildren().remove(pane);
+            paneTablero.getChildren().add(index, nuevoPaneCuadro);
+            //}
+            System.out.println(posicionCuadro);
+            posicionCuadro.clear();
+            padre.getRootNode().getChildren().clear();
+
+            cuadro.setDibujado(true);
+        } catch (NullPointerException | IOException ex) {
+            img = new ImageView();
+        }
+    }
+
+    //OJO
+    public Tree<String[][]> generarEstadosActual(String[][] tableroActual) {
+        Tree<String[][]> tree = new Tree<>(tableroActual);
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (tableroActual[i][j] == "") {
+                    String tableroCopia[][] = hacerCopia(tableroActual);
+                    tableroCopia[i][j] = "o";
+                    Tree<String[][]> hijoArbol = new Tree<>(tableroCopia);
+                    tree.getRootNode().addChild(hijoArbol);
+
+                }
+            }
+        }
+        List<Tree<String[][]>> hijosPadre = tree.getRootNode().getChildren();
+        for (Tree<String[][]> child : hijosPadre) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (child.getRoot()[i][j] == "") {
+                        String tableroCopia[][] = hacerCopia(child.getRoot());
+                        tableroCopia[i][j] = "x";
+                        Tree<String[][]> hijoArbol = new Tree<>(tableroCopia);
+                        child.getRootNode().addChild(hijoArbol);
+                    }
+                }
+            }
+
+        }
+
+        return tree;
+    }
+
+    public String[][] hacerCopia(String[][] tableroActual) {
+        String[][] tableroCopia = new String[tableroActual.length][];
+        for (int i = 0; i < tableroActual.length; i++) {
+            tableroCopia[i] = tableroActual[i].clone();
+        }
+        return tableroCopia;
+    }
+
+    public ArrayList<Integer> utilidadMaxima(Tree<String[][]> tree) {
+        List<Tree<String[][]>> hijosPadre = tree.getRootNode().getChildren();
+        ArrayList<ArrayList<Integer>> arregloUtilidades = new ArrayList<>();
+        ArrayList<Integer> arregloUtilidadesMiniminas = new ArrayList<>();
+        ArrayList<Integer> posicionCuadro = new ArrayList<>();
+        for (Tree<String[][]> child : hijosPadre) {
+            List<Tree<String[][]>> sobrinos = child.getRootNode().getChildren();
+            ArrayList<Integer> arreglo = new ArrayList<>();
+            for (Tree<String[][]> sobrino : sobrinos) {
+                String tableroJugador[][] = child.getRoot();
+                String tableroOponente[][] = sobrino.getRoot();
+                int utilidad = PjugadorX(tableroOponente) - PjugadorO(tableroJugador);
+                arreglo.add(utilidad);
+            }
+            arregloUtilidades.add(arreglo);
+        }
+        if (!arregloUtilidades.isEmpty()) {
+            for (ArrayList<Integer> arreglo : arregloUtilidades) {
+                int minimo = Collections.min(arreglo);
+                arregloUtilidadesMiniminas.add(minimo);
+            }
+            int maximo = Collections.min(arregloUtilidadesMiniminas);
+            int indice = arregloUtilidadesMiniminas.indexOf(maximo);
+            Tree<String[][]> movimientoSeleccionado = hijosPadre.get(indice);
+            String[][] tableroAct = movimientoSeleccionado.getRoot();
+            int posicionI = 0;
+            int posicionJ = 0;
+            System.out.println(movimientoSeleccionado.getRootNode().toString());
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (tableroAct[i][j] == "o" && tableroAct[i][j] != "AQUI") {
+                        posicionI = i;
+                        posicionJ = j;
+                    }
+                }
+            }
+            posicionCuadro.add(posicionI);
+            posicionCuadro.add(posicionJ);
+            return posicionCuadro;
+        } else {
+
+            return posicionCuadro;
+        }
+    }
+
+    public int PjugadorX(String tableroOponente[][]) {
+        int pjugador = 0;
+        for (int i = 0; i < 3; i++) {
+            if (tableroOponente[i][0] != "o" && tableroOponente[i][1] != "o" && tableroOponente[i][2] != "o") {
+                pjugador++;
+            }
+            if (tableroOponente[0][i] != "o" && tableroOponente[1][i] != "o" && tableroOponente[2][i] != "o") {
+                pjugador++;
+            }
+        }
+
+        if (tableroOponente[0][0] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][2] != "o") {
+            pjugador++;
+        }
+        if (tableroOponente[0][2] != "o" && tableroOponente[1][1] != "o" && tableroOponente[2][0] != "o") {
+            pjugador++;
+        }
+        return pjugador;
+    }
+
+    public int PjugadorO(String tableroOponente[][]) {
+        int pjugador = 0;
+        for (int i = 0; i < 3; i++) {
+            if (tableroOponente[i][0] != "x" && tableroOponente[i][1] != "x" && tableroOponente[i][2] != "x" && tableroOponente[i][0] != "AQUI" && tableroOponente[i][1] != "AQUI" && tableroOponente[i][2] != "AQUI") {
+                pjugador++;
+            }
+            if (tableroOponente[0][i] != "x" && tableroOponente[1][i] != "x" && tableroOponente[2][i] != "x" && tableroOponente[0][i] != "AQUI" && tableroOponente[1][i] != "AQUI" && tableroOponente[2][i] != "AQUI") {
+                pjugador++;
+            }
+        }
+
+        if (tableroOponente[0][0] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][2] != "x" && tableroOponente[0][0] != "AQUI" && tableroOponente[1][1] != "AQUI" && tableroOponente[2][2] != "AQUI") {
+            pjugador++;
+        }
+        if (tableroOponente[0][2] != "x" && tableroOponente[1][1] != "x" && tableroOponente[2][0] != "x" && tableroOponente[0][2] != "AQUI" && tableroOponente[1][1] != "AQUI" && tableroOponente[2][0] != "AQUI") {
+            pjugador++;
+        }
+        return pjugador;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paneCuadroFrontal = new AnchorPane();
+        //paneCuadroFrontal = new AnchorPane();
         jugadorActual = TipoImagen.EQUIS;
         turnoPartida = TipoImagen.EQUIS;
         tablero = new Tablero();
-        tablero.setJugador1(jugador1);
-        tablero.setJugador2(jugadorM);
+        tablero.setJugador1(maquina);
+        tablero.setJugador2(jugador2);
         panelFondo.setStyle("-fx-border-color: #D2B48C; -fx-border-width: 10px;-fx-background-color: #87CEEB");
         tablero.crearTablero();
         tablero.crearCuadrosInternos();
-
+        //if (jugadorActual == TipoImagen.CIRCULO && tipoImagenResultado != TipoImagen.EMPATE && tipoImagenResultado != TipoImagen.LINEA1 && tipoImagenResultado != TipoImagen.LINEA2 && tipoImagenResultado != TipoImagen.LINEA3 && tipoImagenResultado != TipoImagen.LINEA4 && tipoImagenResultado != TipoImagen.LINEA5 && tipoImagenResultado != TipoImagen.LINEA6 && tipoImagenResultado != TipoImagen.LINEA7 && tipoImagenResultado != TipoImagen.LINEA8) {
+            jugarTurnoMaquina(jugador2);
+        //}
         try {
-            InputStream jugador1 = App.class.getResource("jugadorUno.png").openStream();
-            InputStream jugador2 = App.class.getResource("maquina.png").openStream();
+            InputStream maquinaInput = App.class.getResource("maquina.png").openStream();
+            InputStream jugador2Input = App.class.getResource("jugadorDos.png").openStream();
             //InputStream x = App.class.getResource("Equis.png").openStream();
             //InputStream o = App.class.getResource("Circulo.png").openStream();
-            Image imgJugador1 = new Image(jugador1, 50, 50, true, true);
-            Image imgJugador2 = new Image(jugador2, 50, 50, true, true);
+            Image imgJugador1 = new Image(maquinaInput, 50, 50, true, true);
+            Image imgJugador2 = new Image(jugador2Input, 50, 50, true, true);
             //Image imgx = new Image(x, 50, 50, true, true);
             //Image imgo = new Image(o, 50, 50, true, true);
-            jugador1Img = new ImageView(imgJugador1);
-            jugadorMImag = new ImageView(imgJugador2);
+            maquinaImg = new ImageView(imgJugador1);
+            jugador2Img = new ImageView(imgJugador2);
             //xImg = new ImageView(imgx);
             //oImg = new ImageView(imgo);
 
         } catch (NullPointerException | IOException ex) {
-            jugador1Img = new ImageView();
-            jugadorMImag = new ImageView();
+            maquinaImg = new ImageView();
+            jugador2Img = new ImageView();
             //xImg = new ImageView();
             //oImg = new ImageView();
         }
-        vBoxJugador1.getChildren().add(0, jugador1Img);
+        vBoxJugador1.getChildren().add(0, maquinaImg);
         //hBoxJugador1.getChildren().add(xImg);
-        vBoxJugadorM.getChildren().add(0, jugadorMImag);
+        vBoxJugadorM.getChildren().add(0, jugador2Img);
 
-        tablero.cambiarEstilos(TipoImagen.EQUIS);
+        cambiarEstilos(TipoImagen.EQUIS);
         //hBoxJugador2.getChildren().add(oImg);
-        lblJugador1.setText(jugador1.getNombre());
-        lblJugadorM.setText(jugadorM.getNombre());
+        lblJugador1.setText(maquina.getNombre());
+        lblJugadorM.setText(jugador2.getNombre());
     }
 
 }
