@@ -48,13 +48,13 @@ public class VistaVictoriaMController implements Initializable {
     private Button btnJugarDeNuevo;
     private static Tablero tablero;
     private static TipoImagen jugadorGanador;
-    private JugadorM jugadorP1 = new JugadorM();
+    private Maquina maquina;
     private Maquina jugador2;
 
     public VistaVictoriaMController() {
     }
 
-    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, JugadorM jugador1, Maquina jugadorM) {
+    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, Maquina maquina, JugadorM jugador2) {
         //jugadorP1.setNombre(jugador1.getNombre());
         VistaVictoriaMController.jugadorGanador = jugadorGanador;
         VistaVictoriaMController.tablero = tablero;
@@ -98,31 +98,30 @@ public class VistaVictoriaMController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            System.out.println("aqui");
             InputStream input1;
             InputStream input2;
             if (jugadorGanador == TipoImagen.EQUIS) {
                 input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
-                Image imagen1 = new Image(input1, 80, 80, true, true);
-                Image imagen2 = new Image(input2, 80, 80, true, true);
-                imgIcono = new ImageView(imagen1);
-                imgGanador = new ImageView(imagen2);
-                lblGanador.setText(VistaJ1VsMaquinaController.jugador1.getNombre());
-                hBoxVictoria.getChildren().add(0, imgGanador);
-                hBoxVictoria.getChildren().add(imgIcono);
-            } else if (jugadorGanador == TipoImagen.CIRCULO) {
-                input1 = App.class.getResource(Ruta.CIRCULO).openStream();
                 input2 = App.class.getResource(Ruta.JUGADORMAQUINA).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
                 imgGanador = new ImageView(imagen2);
-                lblGanador.setText(VistaJ1VsMaquinaController.jugadorM.getNombre());
+                lblGanador.setText(VistaJ1VsMaquinaController.maquina.getNombre());
+                hBoxVictoria.getChildren().add(0, imgGanador);
+                hBoxVictoria.getChildren().add(imgIcono);
+            } else if (jugadorGanador == TipoImagen.CIRCULO) {
+                input1 = App.class.getResource(Ruta.CIRCULO).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
+                Image imagen1 = new Image(input1, 80, 80, true, true);
+                Image imagen2 = new Image(input2, 80, 80, true, true);
+                imgIcono = new ImageView(imagen1);
+                imgGanador = new ImageView(imagen2);
+                lblGanador.setText(VistaJ1VsMaquinaController.jugador2.getNombre());
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
             } else {
-                input1 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
+                input1 = App.class.getResource(Ruta.JUGADORMAQUINA).openStream();
                 input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);

@@ -72,8 +72,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
     @FXML
     private AnchorPane paneCuadroFrontal;
 
-    public static JugadorM jugador1;
-    public static Maquina jugadorM;
+    public static Maquina maquina;
+    public static JugadorM jugador2;
     public static Tablero tablero;
     private TipoImagen jugadorActual;
     private TipoImagen turnoPartida;
@@ -81,9 +81,9 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
     private ArrayList<Cuadro> cuadros = new ArrayList();
 
-    public static void EnviarJugador(JugadorM jugador1, Maquina jugadorM) {
-        VistaJ1VsMaquinaController.jugador1 = jugador1;
-        VistaJ1VsMaquinaController.jugadorM = jugadorM;
+    public static void EnviarJugador(Maquina maquina, JugadorM jugador2) {
+        VistaJ1VsMaquinaController.maquina = maquina;
+        VistaJ1VsMaquinaController.jugador2 = jugador2;
     }
 
     public class Tablero {
@@ -114,15 +114,15 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 lblPuntaje2.setText(String.valueOf(puntajeNuevo));
             }
             if (turnoPartida == TipoImagen.EQUIS) {
-                jugadorActual = TipoImagen.EQUIS;
-                turnoPartida = TipoImagen.EQUIS;
+                //jugadorActual = TipoImagen.EQUIS;
+                //turnoPartida = TipoImagen.EQUIS;
             } else if (turnoPartida == TipoImagen.CIRCULO) {
                 jugadorActual = TipoImagen.EQUIS;
                 turnoPartida = TipoImagen.EQUIS;
             }
             cambiarEstilos(jugadorActual.EQUIS);
-            jugador1.limpiarTablero();
-            jugadorM.limpiarTablero();
+            maquina.limpiarTablero();
+            jugador2.limpiarTablero();
             /*if (turnoPartida == TipoImagen.CIRCULO) {
                 String[][] nv = new String[3][3];
                 for (int i = 0; i < 3; i++) {
@@ -144,7 +144,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                         public void run() {
                             Platform.runLater(() -> {
                                 VistaVictoriaMController v1 = new VistaVictoriaMController();
-                                v1.pintarGanador(tipoImagenResultado, tablero, jugador1, jugadorM);
+                                v1.pintarGanador(tipoImagenResultado, tablero, maquina, jugador2);
                             });
                         }
                     };

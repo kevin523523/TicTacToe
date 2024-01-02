@@ -84,11 +84,11 @@ public class VistaPrincipalController implements Initializable {
 
     @FXML
     public void switchTo1vsMaquina(MouseEvent event) throws IOException {
-        JugadorM jugador1 = new JugadorM(TipoImagen.EQUIS);
-        jugador1.setNombre("JUGADOR");
-        Maquina maquina = new Maquina(TipoImagen.CIRCULO);
+        Maquina maquina = new Maquina(TipoImagen.EQUIS);
         maquina.setNombre("MAQUINA");
-        VistaJ1VsMaquinaController.EnviarJugador(jugador1, maquina);
+        JugadorM jugador2 = new JugadorM(TipoImagen.CIRCULO);
+        maquina.setNombre("MAQUINA");
+        VistaJ1VsMaquinaController.EnviarJugador(maquina, jugador2);
         App.setRoot("VistaJ1vsMaquina");
     }
 
