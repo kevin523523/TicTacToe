@@ -142,7 +142,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
             //paneCuadroFrontal.setPrefWidth(350); // Establecer el nuevo ancho
             //paneCuadroFrontal.setPrefHeight(350);
             //paneCuadroFrontal.setLayoutX(15);
-           //paneCuadroFrontal.setLayoutY(15);
+            //paneCuadroFrontal.setLayoutY(15);
             hBoxTablero.getChildren().add(paneTablero);
 
         }
@@ -208,7 +208,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
                     paneCuadroFrontal.getChildren().add(imgFrontal);
 
-                    paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50); // Establecer el nuevo ancho
+                    paneCuadroFrontal.setPrefWidth(paneTablero.getWidth() - 50);
                     paneCuadroFrontal.setPrefHeight(paneTablero.getHeight() - 50);
                     paneTablero.getChildren().add(paneCuadroFrontal);
 
@@ -236,19 +236,22 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
         public void jugarTurnoHumano(AnchorPane paneCuadro, Cuadro cuadro) {
             TipoImagen tipoImagenResultado = null;
-            if (jugadorActual == TipoImagen.EQUIS) {
-                maquina.getTablero()[cuadro.getI()][cuadro.getJ()] = "x";
-                tipoImagenResultado = maquina.tresEnRaya(jugador2);
-                setTipoImagen(TipoImagen.EQUIS);
+            if (jugadorActual == TipoImagen.CIRCULO) {
+                jugador2.getTablero()[cuadro.getI()][cuadro.getJ()] = "o";
+                tipoImagenResultado = jugador2.tresEnRaya(maquina);
+                setTipoImagen(TipoImagen.CIRCULO);
                 AnchorPane paneCuadroD = cuadro.paintComponent(paneCuadro);
                 int index = 3 * cuadro.getI() + cuadro.getJ();
                 //Node pane = paneTablero.getChildren().get(index);
-                jugadorActual = TipoImagen.CIRCULO;
+                jugadorActual = TipoImagen.EQUIS;
                 paneTablero.getChildren().remove(index);
                 paneTablero.getChildren().add(index, paneCuadroD);
-                cambiarEstilos(TipoImagen.CIRCULO);
-                tablero.resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
+                cambiarEstilos(TipoImagen.EQUIS);
+                tablero.resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
                 cuadro.setDibujado(true);
+                if (jugadorActual == TipoImagen.EQUIS && tipoImagenResultado != TipoImagen.EMPATE && tipoImagenResultado != TipoImagen.LINEA1 && tipoImagenResultado != TipoImagen.LINEA2 && tipoImagenResultado != TipoImagen.LINEA3 && tipoImagenResultado != TipoImagen.LINEA4 && tipoImagenResultado != TipoImagen.LINEA5 && tipoImagenResultado != TipoImagen.LINEA6 && tipoImagenResultado != TipoImagen.LINEA7 && tipoImagenResultado != TipoImagen.LINEA8) {
+                    jugarTurnoMaquina(jugador2);
+                }
             }
         }
 
@@ -391,30 +394,28 @@ public class VistaJ1VsMaquinaController implements Initializable {
 
     public void cambiarEstilos(TipoImagen jugadorActual) {
         try {
-            InputStream jugadorAuxiliarMaquinaInput = App.class.getResource(Ruta.JUGADORAUXILLARMAQUINA).openStream();
-            InputStream jugadorAuxiliarJugador2Input = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
-            Image imgAuxiliarMaquina = new Image(jugadorAuxiliarMaquinaInput, 50, 50, true, true);
-            Image imgAuxiliarJugador2 = new Image(jugadorAuxiliarJugador2Input, 80, 80, true, true);
             InputStream maquinaInput = App.class.getResource("maquina.png").openStream();
             InputStream jugador2Input = App.class.getResource("jugadorDos.png").openStream();
-            Image imgJugador1 = new Image(maquinaInput, 50, 50, true, true);
+            InputStream jugadorAuxiliarMaquinaInput = App.class.getResource(Ruta.JUGADORAUXILLARMAQUINA).openStream();
+            InputStream jugadorAuxiliarJugador2Input = App.class.getResource(Ruta.JUGADORAUXILLAR).openStream();
+            Image imgJugador1 = new Image(maquinaInput, 80, 50, true, true);
             Image imgJugador2 = new Image(jugador2Input, 50, 50, true, true);
-
+            Image imgAuxiliarMaquina = new Image(jugadorAuxiliarMaquinaInput, 80, 50, true, true);
+            Image imgAuxiliarJugador2 = new Image(jugadorAuxiliarJugador2Input, 50, 50, true, true);
             if (jugadorActual == TipoImagen.CIRCULO) {
                 maquinaImg = new ImageView(imgAuxiliarMaquina);
+                jugador2Img = new ImageView(imgJugador2);
                 vBoxJugador1.getChildren().remove(0);
                 vBoxJugador1.getChildren().add(0, maquinaImg);
-                jugador2Img = new ImageView(imgJugador2);
-                vBoxJugadorM.getChildren().remove(0);
-                vBoxJugadorM.getChildren().add(0, maquinaImg);
-
-            } else {
-                jugador2Img = new ImageView(imgAuxiliarJugador2);
                 vBoxJugadorM.getChildren().remove(0);
                 vBoxJugadorM.getChildren().add(0, jugador2Img);
-                jugador2Img = new ImageView(imgJugador1);
+            } else {
+                maquinaImg = new ImageView(imgJugador1);
+                jugador2Img = new ImageView(imgAuxiliarJugador2);
                 vBoxJugador1.getChildren().remove(0);
-                vBoxJugador1.getChildren().add(0, jugador2Img);
+                vBoxJugador1.getChildren().add(0, maquinaImg);
+                vBoxJugadorM.getChildren().remove(0);
+                vBoxJugadorM.getChildren().add(0, jugador2Img);
             }
 
         } catch (IOException ex) {
@@ -422,29 +423,21 @@ public class VistaJ1VsMaquinaController implements Initializable {
     }
 
     public void jugarTurnoMaquina(JugadorM jugador) {
+        TipoImagen tipoImagenResultado = maquina.tresEnRaya(jugador);
+        setTipoImagen(TipoImagen.EQUIS);
         jugadorActual = TipoImagen.CIRCULO;
         turnoMaquina(jugador.getTablero());
-        cambiarEstilos(TipoImagen.EQUIS);
-        TipoImagen tipoImagenResultado = maquina.tresEnRaya(jugador2);
-        setTipoImagen(TipoImagen.CIRCULO);
-        tablero.resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
+        cambiarEstilos(TipoImagen.CIRCULO);
+        tablero.resultado(tipoImagenResultado, TipoImagen.EQUIS, paneCuadroFrontal);
     }
 
-    /*public void jugarTurnoMaquinaPrimero(String tablero[][]) {
-            jugadorActual = TipoImagen.EQUIS;
-            turnoMaquina(tablero);
-            cambiarEstilos(TipoImagen.EQUIS);
-            TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
-            resultado(tipoImagenResultado, TipoImagen.CIRCULO, paneCuadroFrontal);
-        }*/
     public void turnoMaquina(String[][] tableroJ) {
-
         Tree<String[][]> padre = generarEstadosActual(tableroJ);
         ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
         try {
             maquina.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "x";
             jugador2.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "AQUI";
-            //TipoImagen tipoImagenResultado = jugadorM.tresEnRaya(jugador1);
+            TipoImagen tipoImagenResultado = maquina.tresEnRaya(jugador2);
 
             Cuadro cuadro = new Cuadro();
             cuadro.setI(posicionCuadro.get(0));
@@ -467,10 +460,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
             paneTablero.getChildren().remove(pane);
             paneTablero.getChildren().add(index, nuevoPaneCuadro);
             //}
-            System.out.println(posicionCuadro);
             posicionCuadro.clear();
             padre.getRootNode().getChildren().clear();
-
             cuadro.setDibujado(true);
         } catch (NullPointerException | IOException ex) {
             img = new ImageView();
@@ -615,34 +606,20 @@ public class VistaJ1VsMaquinaController implements Initializable {
         tablero.crearTablero();
         tablero.crearCuadrosInternos();
         //if (jugadorActual == TipoImagen.CIRCULO && tipoImagenResultado != TipoImagen.EMPATE && tipoImagenResultado != TipoImagen.LINEA1 && tipoImagenResultado != TipoImagen.LINEA2 && tipoImagenResultado != TipoImagen.LINEA3 && tipoImagenResultado != TipoImagen.LINEA4 && tipoImagenResultado != TipoImagen.LINEA5 && tipoImagenResultado != TipoImagen.LINEA6 && tipoImagenResultado != TipoImagen.LINEA7 && tipoImagenResultado != TipoImagen.LINEA8) {
-            jugarTurnoMaquina(jugador2);
+        jugarTurnoMaquina(jugador2);
         //}
         try {
             InputStream maquinaInput = App.class.getResource("maquina.png").openStream();
             InputStream jugador2Input = App.class.getResource("jugadorDos.png").openStream();
-            //InputStream x = App.class.getResource("Equis.png").openStream();
-            //InputStream o = App.class.getResource("Circulo.png").openStream();
-            Image imgJugador1 = new Image(maquinaInput, 50, 50, true, true);
+            Image imgJugador1 = new Image(maquinaInput, 80, 50, true, true);
             Image imgJugador2 = new Image(jugador2Input, 50, 50, true, true);
-            //Image imgx = new Image(x, 50, 50, true, true);
-            //Image imgo = new Image(o, 50, 50, true, true);
             maquinaImg = new ImageView(imgJugador1);
             jugador2Img = new ImageView(imgJugador2);
-            //xImg = new ImageView(imgx);
-            //oImg = new ImageView(imgo);
-
         } catch (NullPointerException | IOException ex) {
             maquinaImg = new ImageView();
             jugador2Img = new ImageView();
-            //xImg = new ImageView();
-            //oImg = new ImageView();
         }
-        vBoxJugador1.getChildren().add(0, maquinaImg);
-        //hBoxJugador1.getChildren().add(xImg);
-        vBoxJugadorM.getChildren().add(0, jugador2Img);
 
-        cambiarEstilos(TipoImagen.EQUIS);
-        //hBoxJugador2.getChildren().add(oImg);
         lblJugador1.setText(maquina.getNombre());
         lblJugadorM.setText(jugador2.getNombre());
     }

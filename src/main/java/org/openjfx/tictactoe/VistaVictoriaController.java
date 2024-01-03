@@ -57,7 +57,7 @@ public class VistaVictoriaController implements Initializable {
         this.jugadorGanador = jugadorGanador;
         this.tablero = tablero;
         try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoriaM.fxml"));
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("VistaVictoria.fxml"));
             Parent root = loader.load();
             // Crear una nueva Scene
             Scene scene = new Scene(root);
@@ -66,7 +66,6 @@ public class VistaVictoriaController implements Initializable {
             nuevoStage.setScene(scene);
             nuevoStage.setTitle("Vista Ganador");
             // Mostrar el nuevo Stage
-
             nuevoStage.show();
         } catch (IOException ex) {
         }
@@ -103,7 +102,7 @@ public class VistaVictoriaController implements Initializable {
             InputStream input2;
             if (VistaVictoriaController.jugadorGanador == TipoImagen.EQUIS) {
                 input1 = App.class.getResource(Ruta.EQUIS).openStream();
-                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
+                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);
@@ -113,7 +112,7 @@ public class VistaVictoriaController implements Initializable {
                 hBoxVictoria.getChildren().add(imgIcono);
             } else if (VistaVictoriaController.jugadorGanador == TipoImagen.CIRCULO) {
                 input1 = App.class.getResource(Ruta.CIRCULO).openStream();
-                input2 = App.class.getResource(Ruta.JUGADOREQUIS).openStream();
+                input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
                 Image imagen2 = new Image(input2, 80, 80, true, true);
                 imgIcono = new ImageView(imagen1);

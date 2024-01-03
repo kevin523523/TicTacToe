@@ -87,7 +87,7 @@ public class VistaPrincipalController implements Initializable {
         Maquina maquina = new Maquina(TipoImagen.EQUIS);
         maquina.setNombre("MAQUINA");
         JugadorM jugador2 = new JugadorM(TipoImagen.CIRCULO);
-        maquina.setNombre("MAQUINA");
+        jugador2.setNombre("HUMANO");
         VistaJ1VsMaquinaController.EnviarJugador(maquina, jugador2);
         App.setRoot("VistaJ1vsMaquina");
     }
