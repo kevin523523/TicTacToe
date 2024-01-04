@@ -48,13 +48,13 @@ public class VistaVictoriaMController implements Initializable {
     private Button btnJugarDeNuevo;
     private static Tablero tablero;
     private static TipoImagen jugadorGanador;
-    private Maquina maquina;
-    private Maquina jugador2;
+    private Maquina jugadorM ;
+    private JugadorM jugador2;
 
     public VistaVictoriaMController() {
     }
 
-    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, Maquina maquina, JugadorM jugador2) {
+    public void pintarGanador(TipoImagen jugadorGanador, Tablero tablero, Maquina jugadorM,JugadorM jugador2) {
         //jugadorP1.setNombre(jugador1.getNombre());
         VistaVictoriaMController.jugadorGanador = jugadorGanador;
         VistaVictoriaMController.tablero = tablero;
@@ -110,7 +110,7 @@ public class VistaVictoriaMController implements Initializable {
                 lblGanador.setText(VistaJ1VsMaquinaController.maquina.getNombre());
                 hBoxVictoria.getChildren().add(0, imgGanador);
                 hBoxVictoria.getChildren().add(imgIcono);
-            } else if (jugadorGanador == TipoImagen.CIRCULO) {
+            }else if (jugadorGanador == TipoImagen.CIRCULO) {
                 input1 = App.class.getResource(Ruta.CIRCULO).openStream();
                 input2 = App.class.getResource(Ruta.JUGADORCIRCULO).openStream();
                 Image imagen1 = new Image(input1, 80, 80, true, true);
@@ -140,3 +140,4 @@ public class VistaVictoriaMController implements Initializable {
     }
 
 }
+
