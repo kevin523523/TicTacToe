@@ -282,8 +282,8 @@ public class VistaJ1VsMaquinaController implements Initializable {
             Tree<String[][]> padre = generarEstadosActual(tableroJ);
             ArrayList<Integer> posicionCuadro = utilidadMaxima(padre);
             try {
-                maquina.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "M";
-                jugador2.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
+                maquina.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "o";
+                jugador2.getTablero()[posicionCuadro.get(0)][posicionCuadro.get(1)] = "M";
                 TipoImagen tipoImagenResultado = maquina.tresEnRaya(jugador2);
                 Cuadro cuadro = new Cuadro();
                 cuadro.setI(posicionCuadro.get(0));
@@ -306,7 +306,7 @@ public class VistaJ1VsMaquinaController implements Initializable {
                 paneTablero.getChildren().remove(pane);
                 paneTablero.getChildren().add(index, nuevoPaneCuadro);
                 //}
-                System.out.println(posicionCuadro);
+
                 posicionCuadro.clear();
                 padre.getRootNode().getChildren().clear();
 
@@ -379,12 +379,10 @@ public class VistaJ1VsMaquinaController implements Initializable {
                     int minimo = Collections.min(arreglo);
                     arregloUtilidadesMiniminas.add(minimo);
                 }
-                System.out.println(arregloUtilidadesMiniminas);
                 int maximo = Collections.max(arregloUtilidadesMiniminas);
                 int indice = arregloUtilidadesMiniminas.indexOf(maximo);
                 Tree<String[][]> movimientoSeleccionado = hijosPadre.get(indice);
                 String[][] tableroAct = movimientoSeleccionado.getRoot();
-                System.out.println(movimientoSeleccionado.getRootNode().toString());
                 int posicionI = 0;
                 int posicionJ = 0;
                 for (int i = 0; i < 3; i++) {
