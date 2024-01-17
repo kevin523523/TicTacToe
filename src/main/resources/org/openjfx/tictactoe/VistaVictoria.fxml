@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="193.0" prefWidth="515.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.tictactoe.VistaVictoriaController">
+   <children>
+      <VBox fx:id="vBoxJugadores" alignment="CENTER" layoutX="9.0" layoutY="11.0" prefHeight="158.0" prefWidth="508.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="VICTORIA">
+               <font>
+                  <Font name="Algerian" size="36.0" />
+               </font>
+            </Label>
+            <HBox fx:id="hBoxVictoria" alignment="CENTER" prefHeight="70.0" prefWidth="270.0">
+               <children>
+                  <Label fx:id="lblGanador" text="Nombre">
+                     <font>
+                        <Font name="Algerian" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+               <children>
+                  <Button fx:id="btnRegresar" mnemonicParsing="false" onMouseClicked="#regresar" text="Regresar Ventana Principal">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnJugarDeNuevo" mnemonicParsing="false" onMouseClicked="#jugarDeNuevo" text="Jugar De Nuevo">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
